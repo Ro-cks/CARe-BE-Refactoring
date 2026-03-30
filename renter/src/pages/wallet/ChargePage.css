@@ -1,0 +1,278 @@
+* { box-sizing: border-box; }
+
+.charge-page {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -- Header -- */
+.charge-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 52px 20px 16px;
+}
+
+.charge-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.charge-back-btn:active { background: #ebebeb; }
+
+.charge-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+/* -- Body -- */
+.charge-body {
+  flex: 1;
+  padding: 24px 20px 0;
+}
+
+.charge-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin: 0 0 10px;
+}
+
+/* -- Input -- */
+.charge-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 2px solid #F7A633;
+  border-radius: 16px;
+  padding: 16px 20px;
+  gap: 8px;
+}
+
+.charge-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 32px;
+  font-weight: 800;
+  color: #111;
+  background: transparent;
+  letter-spacing: -1px;
+  min-width: 0;
+}
+
+.charge-input::placeholder { color: #ddd; }
+
+.charge-input-unit {
+  font-size: 18px;
+  font-weight: 700;
+  color: #F7A633;
+  flex-shrink: 0;
+}
+
+.charge-error {
+  font-size: 13px;
+  color: #e53935;
+  margin: 8px 0 0;
+}
+
+/* -- Preset buttons -- */
+.charge-preset-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.charge-preset-btn {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 12px;
+  background: #f5f5f5;
+  border: 1.5px solid #eee;
+  font-size: 13px;
+  font-weight: 700;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.charge-preset-btn.active,
+.charge-preset-btn:active {
+  background: rgba(247, 166, 51, 0.15);
+  border-color: #F7A633;
+  color: #F7A633;
+}
+
+/* -- Info box -- */
+.charge-info-box {
+  margin-top: 24px;
+  background: #fffaf0;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(247, 166, 51, 0.25);
+}
+
+.charge-info-box p {
+  font-size: 13px;
+  color: #7A5C20;
+  margin: 0 0 6px;
+  line-height: 1.5;
+}
+
+.charge-info-box p:last-child { margin-bottom: 0; }
+
+/* -- Confirm button -- */
+.charge-confirm-btn {
+  margin: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  background: #F7A633;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  letter-spacing: -0.3px;
+}
+
+.charge-confirm-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.charge-confirm-btn:not(:disabled):active { opacity: 0.75; }
+
+/* -- Success state -- */
+.charge-success-card {
+  margin: 24px 20px;
+  background: linear-gradient(135deg, rgba(249, 200, 90, 0.15) 0%, rgba(247, 166, 51, 0.2) 100%);
+  border: 1px solid rgba(247, 166, 51, 0.3);
+  border-radius: 24px;
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.charge-success-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #F7A633;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+
+.charge-success-label {
+  font-size: 14px;
+  color: #7A5C20;
+  margin: 0 0 8px;
+}
+
+.charge-success-amount {
+  font-size: 40px;
+  font-weight: 800;
+  color: #3D2600;
+  margin: 0 0 24px;
+  letter-spacing: -1.5px;
+}
+
+.charge-success-amount span {
+  font-size: 20px;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.charge-success-divider {
+  height: 1px;
+  background: rgba(247, 166, 51, 0.3);
+  margin-bottom: 20px;
+}
+
+.charge-success-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.charge-success-row span { color: #7A5C20; }
+.charge-success-row strong { color: #3D2600; font-weight: 700; }
+
+.charge-tx-hash {
+  font-family: monospace;
+  font-size: 12px;
+  color: #999;
+}
+
+/* ── 충전 중 오버레이 ──────────────────── */
+.charge-loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.92);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.charge-loading-spinner {
+  width: 52px;
+  height: 52px;
+  border: 4px solid #FFE8B0;
+  border-top-color: #F7A633;
+  border-radius: 50%;
+  animation: charge-spin 0.8s linear infinite;
+}
+
+@keyframes charge-spin {
+  to { transform: rotate(360deg); }
+}
+
+.charge-loading-text {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.charge-loading-sub {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0;
+}
+
+/* ── 충전 완료 버튼 2개 ──────────────────── */
+.charge-result-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px 40px;
+}
+
+.charge-confirm-btn--secondary {
+  background: #f5f5f5;
+  color: #888;
+  box-shadow: none;
+}

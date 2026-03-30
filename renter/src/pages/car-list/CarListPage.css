@@ -1,0 +1,310 @@
+/* ── 전체 ─────────────────────────────── */
+.cl-wrap {
+  min-height: 100vh;
+  background: #f7f7f7;
+  padding-bottom: 80px;
+}
+
+/* ── 헤더 ─────────────────────────────── */
+.cl-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.cl-back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cl-header-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+.cl-header-info { flex: 1; }
+
+.cl-loc {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cl-date {
+  font-size: 11px;
+  color: #999;
+  margin: 1px 0 0;
+}
+
+.cl-logo {
+  width: 60px;
+  flex-shrink: 0;
+}
+
+/* ── 필터 칩 ─────────────────────────── */
+.cl-filter-row {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  scrollbar-width: none;
+}
+.cl-filter-row::-webkit-scrollbar { display: none; }
+
+.cl-chip {
+  flex-shrink: 0;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1.5px solid #e8e8e8;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.cl-chip.on {
+  border-color: #F7A633;
+  background: #F7A633;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ── 정렬 바 ─────────────────────────── */
+.cl-sort-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cl-count {
+  font-size: 13px;
+  color: #999;
+}
+.cl-count strong {
+  color: #111;
+  font-weight: 700;
+}
+
+.cl-sorts { display: flex; gap: 4px; }
+
+.cl-sort {
+  padding: 4px 10px;
+  border-radius: 14px;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.cl-sort.on {
+  border-color: #F7A633;
+  color: #F7A633;
+  font-weight: 700;
+}
+
+/* ── 차량 목록 ────────────────────────── */
+.cl-list {
+  padding: 0;
+  background: #fff;
+  margin-top: 8px;
+}
+
+/* ── 카드 (가로 레이아웃) ──────────────── */
+.cl-card {
+  display: flex;
+  align-items: stretch;
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  gap: 14px;
+  background: #fff;
+  transition: background 0.1s;
+}
+.cl-card:active { background: #fafafa; }
+
+/* 왼쪽 이미지 */
+.cl-img-wrap {
+  position: relative;
+  width: 120px;
+  height: 88px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.cl-car-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cl-emoji {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.cl-heart {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(255,255,255,0.85);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* 오른쪽 정보 */
+.cl-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.cl-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cl-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cl-star { color: #F7A633; font-size: 13px; }
+.cl-rv   { font-size: 13px; font-weight: 700; color: #111; }
+
+.cl-meta-icon {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* 회사 + 가격 행 */
+.cl-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cl-company {
+  font-size: 11px;
+  color: #888;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cl-price-pill {
+  background: #F7A633;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── 페이지네이션 ─────────────────────── */
+.cl-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 20px 16px 12px;
+  background: #fff;
+}
+
+.cl-page-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.cl-page-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.cl-page-btn:not(:disabled):active { background: #f5f5f5; }
+
+.cl-page-num {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.cl-page-num.active {
+  background: #F7A633;
+  border-color: #F7A633;
+  color: #fff;
+  font-weight: 800;
+}

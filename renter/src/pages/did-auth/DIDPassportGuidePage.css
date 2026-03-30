@@ -1,0 +1,131 @@
+* { box-sizing: border-box; }
+
+.did-guide-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #E8E8E8 0%, #F5F5F5 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* -- Back button -- */
+.did-guide-back {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 10;
+}
+
+/* -- Center content -- */
+.did-guide-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px;
+}
+
+/* -- Scan frame wrapper -- */
+.did-guide-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* -- Blue image container -- */
+.did-guide-image-box {
+  width: 260px;
+  height: 200px;
+  background: #CBD8EC;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.did-guide-passport-img {
+  width: 200px;
+  object-fit: contain;
+}
+
+/* -- Corner brackets -- */
+.did-guide-corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: #F7A633;
+  border-style: solid;
+}
+
+.corner-tl {
+  top: -12px;
+  left: -12px;
+  border-width: 3px 0 0 3px;
+  border-radius: 6px 0 0 0;
+}
+
+.corner-tr {
+  top: -12px;
+  right: -12px;
+  border-width: 3px 3px 0 0;
+  border-radius: 0 6px 0 0;
+}
+
+.corner-bl {
+  bottom: -12px;
+  left: -12px;
+  border-width: 0 0 3px 3px;
+  border-radius: 0 0 0 6px;
+}
+
+.corner-br {
+  bottom: -12px;
+  right: -12px;
+  border-width: 0 3px 3px 0;
+  border-radius: 0 0 6px 0;
+}
+
+/* -- Text below image -- */
+.did-guide-text {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.did-guide-text p {
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
+  line-height: 1.5;
+  letter-spacing: -0.4px;
+}
+
+/* -- Bottom button -- */
+.did-guide-footer {
+  padding: 20px 20px 44px;
+}
+
+.did-guide-btn {
+  width: 100%;
+  background: #F7A633;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 18px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: -0.3px;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.did-guide-btn:active {
+  background: #e09420;
+  transform: scale(0.99);
+}

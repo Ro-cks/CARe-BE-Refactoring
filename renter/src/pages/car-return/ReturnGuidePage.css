@@ -1,0 +1,117 @@
+.rg-page {
+  min-height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.rg-back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* ─── 메인 콘텐츠 ─── */
+.rg-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 28px 32px;
+  gap: 0;
+}
+
+.rg-car-ring {
+  width: 160px;
+  height: 160px;
+  background: #FFF8EE;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  box-shadow: 0 0 0 12px #FFF3E0;
+}
+
+.rg-car-icon {
+  width: 110px;
+  object-fit: contain;
+}
+
+.rg-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #111;
+  text-align: center;
+  line-height: 1.35;
+  margin: 0 0 12px;
+  letter-spacing: -0.5px;
+}
+
+.rg-sub {
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+  margin: 0 0 36px;
+  line-height: 1.6;
+}
+
+/* ─── 체크리스트 ─── */
+.rg-checklist {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rg-check-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #f8f8f8;
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+
+.rg-check-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.rg-check-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* ─── 하단 버튼 ─── */
+.rg-footer {
+  padding: 16px 20px 48px;
+}
+
+.rg-primary-btn {
+  width: 100%;
+  background: #F7A633;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 18px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+  box-shadow: 0 4px 16px rgba(247, 166, 51, 0.4);
+}
+
+.rg-primary-btn:active {
+  opacity: 0.85;
+}

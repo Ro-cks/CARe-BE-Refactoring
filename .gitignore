@@ -1,0 +1,70 @@
+# IntelliJ
+.idea/
+*.iml
+
+# Gradle build outputs
+backend/build/
+backend/bin/
+backend/.gradle/
+renter/backend/build/
+renter/backend/bin/
+renter/backend/.gradle/
+
+# Node.js
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+
+# Environment files
+backend/.env
+**/.env
+.env.*
+**/.env.*
+
+# 로컬 블록체인 테스트 설정 (private key 포함)
+backend/src/test/resources/blockchain-local.properties
+
+# Python
+.venv/
+**/.venv/
+venv/
+**/venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Logs
+*.log
+
+# ect
+.claude
+.tldr
+.tldignore
+
+# OS files (의도치 않은 설정 공유 방지)
+.DS_Store
+Thumbs.db
+
+# Package Manager Caches (빌드 속도와 저장 공간 최적화)
+.npm/
+.eslintcache
+package-lock.json  
+
+# Testing & Coverage (리포트 파일 제외)
+coverage/
+backend/build/reports/
+
+# Temporary files & IDE extras
+*.tmp
+*.bak
+*.swp
+.vscode/           
+!.vscode/settings.json 
+
+# Python/기타 (혹시 모를 스크립트 도구 대비)
+__pycache__/
+*.py[cod]
+**/*.pt

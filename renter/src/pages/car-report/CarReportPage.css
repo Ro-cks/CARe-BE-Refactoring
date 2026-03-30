@@ -1,0 +1,595 @@
+/* ─── 공통 ────────────────────────────────────────────────── */
+.cp-page {
+  min-height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.cp-back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.cp-footer {
+  margin-top: auto;
+  padding: 16px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cp-primary-btn {
+  width: 100%;
+  background: #F7A633;
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 18px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.cp-primary-btn:active { opacity: 0.85; }
+
+.cp-primary-btn.disabled {
+  background: #ddd;
+  color: #aaa;
+  cursor: default;
+}
+
+.cp-select-hint {
+  text-align: center;
+  font-size: 13px;
+  color: #bbb;
+  margin: 0;
+}
+
+.cp-smartkey-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cp-result-sub-row {
+  display: flex;
+  gap: 10px;
+}
+
+.cp-sub-btn {
+  flex: 1;
+  background: white;
+  color: #555;
+  border: 1.5px solid #e5e5e5;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.cp-sub-btn:active { background: #f5f5f5; }
+
+/* ─── 인트로 ──────────────────────────────────────────────── */
+.cp-intro-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 28px 32px;
+  gap: 0;
+}
+
+.cp-intro-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #111;
+  text-align: center;
+  line-height: 1.3;
+  margin: 0 0 40px;
+  letter-spacing: -0.5px;
+}
+
+.cp-car-ring {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px solid #F7A633;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 36px;
+  background: #fffdf8;
+}
+
+.cp-car-main-icon {
+  width: 130px;
+  object-fit: contain;
+}
+
+.cp-intro-desc-wrap {
+  text-align: center;
+}
+
+.cp-intro-desc {
+  font-size: 16px;
+  color: #888;
+  margin: 0;
+}
+
+.cp-intro-desc-accent {
+  font-size: 26px;
+  font-weight: 900;
+  color: #F7A633;
+  margin: 4px 0 0;
+}
+
+/* ─── 촬영 선택 ────────────────────────────────────────────── */
+.cp-select-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 20px 24px;
+}
+
+.cp-back-btn.cp-back-inline {
+  position: static;
+}
+
+.cp-select-title {
+  font-size: 22px;
+  font-weight: 900;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.cp-panels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 20px;
+}
+
+.cp-panel {
+  background: white;
+  border: 1.5px solid #eee;
+  border-radius: 18px;
+  padding: 20px 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.cp-panel:active { transform: scale(0.97); }
+
+.cp-panel.done {
+  border-color: #F7A633;
+  background: #fffcf5;
+  box-shadow: 0 2px 12px rgba(247,166,51,0.12);
+}
+
+.cp-panel-icon-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cp-panel-icon {
+  width: 56px;
+  object-fit: contain;
+}
+
+.cp-rotate-180 { transform: rotate(180deg); }
+.cp-side       { transform: rotate(-15deg); width: 68px; }
+.cp-flip       { transform: rotate(-15deg) scaleX(-1); width: 68px; }
+
+.cp-panel-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
+}
+
+.cp-panel-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #FFF3E0;
+  color: #F7A633;
+}
+
+.cp-panel-badge.done {
+  background: #E8F5E9;
+  color: #2d9e5b;
+}
+
+/* ─── 카메라 ────────────────────────────────────────────────── */
+.cp-cam-page {
+  min-height: 100vh;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.cp-cam-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 56px 20px 20px;
+  z-index: 10;
+  position: relative;
+}
+
+.cp-cam-back {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cp-cam-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 4px;
+}
+
+.cp-cam-sub {
+  font-size: 13px;
+  color: #F7A633;
+  margin: 0;
+  font-weight: 600;
+}
+
+.cp-cam-area {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-cam-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cp-cam-guide {
+  position: absolute;
+  width: 88%;
+  height: 56%;
+  border: 2px solid #F7A633;
+  border-radius: 16px;
+  box-shadow: 0 0 0 2000px rgba(0,0,0,0.5);
+  z-index: 5;
+}
+
+.cp-cam-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+  z-index: 10;
+}
+
+.cp-cam-error button {
+  background: #F7A633;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.cp-cam-footer {
+  padding: 20px 0 52px;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+}
+
+.cp-shutter-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.cp-shutter-ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 3px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-shutter-inner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.1s;
+}
+
+.cp-shutter-btn:active .cp-shutter-inner { transform: scale(0.88); }
+.cp-shutter-btn:disabled .cp-shutter-inner { opacity: 0.5; }
+
+/* ─── 분석 중 ──────────────────────────────────────────────── */
+.cp-analyzing-page {
+  min-height: 100vh;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+  text-align: center;
+}
+
+.cp-analyzing-wrap {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.cp-analyzing-ring {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cp-analyzing-arc {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #F7A633;
+  border-right-color: #F7A633;
+  animation: cp-spin 1.2s linear infinite;
+}
+
+@keyframes cp-spin { to { transform: rotate(360deg); } }
+
+.cp-analyzing-car {
+  width: 110px;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+}
+
+.cp-sparkle {
+  position: absolute;
+  font-size: 18px;
+  color: #F7A633;
+  animation: cp-sparkle-in 0.35s ease-out;
+  z-index: 3;
+}
+
+.cp-sp1 { top: 12px;  right: 24px; }
+.cp-sp2 { bottom: 16px; right: 16px; transform: scale(0.7); }
+.cp-sp3 { bottom: 20px; left: 20px; }
+.cp-sp4 { top: 20px;  left: 28px; transform: scale(0.8); }
+
+@keyframes cp-sparkle-in {
+  from { opacity: 0; transform: scale(0.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.cp-analyzing-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.cp-analyzing-desc {
+  font-size: 15px;
+  color: #888;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ─── 결과 ─────────────────────────────────────────────────── */
+.cp-result-page {
+  background: #f5f5f7;
+}
+
+.cp-result-header {
+  background: white;
+  padding: 56px 20px 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.cp-result-label {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 4px;
+}
+
+.cp-result-count {
+  font-size: 28px;
+  font-weight: 900;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.cp-result-count span { color: #F7A633; }
+
+.cp-blockchain-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #FFF8EE;
+  border: 1px solid #FFE0A0;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.cp-blockchain-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #F7A633;
+  margin: 0;
+}
+
+.cp-blockchain-hash {
+  font-size: 10px;
+  color: #bbb;
+  margin: 2px 0 0;
+  font-family: monospace;
+}
+
+/* 탑뷰 차량 맵 */
+.cp-car-map-wrap {
+  padding: 24px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.cp-car-map-ring {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 2px solid #f0f0f0;
+}
+
+.cp-car-map-inner {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cp-car-map-img {
+  width: 140px;
+  object-fit: contain;
+}
+
+/* 크랙 마커 */
+.cp-crack-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.cp-crack-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #F7A633;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(247,166,51,0.5);
+}
+
+.cp-crack-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #F7A633;
+  opacity: 0.4;
+  animation: cp-pulse 1.5s ease-out infinite;
+}
+
+@keyframes cp-pulse {
+  from { transform: scale(1); opacity: 0.5; }
+  to   { transform: scale(2.2); opacity: 0; }
+}
+
+/* AI 카드 */
+.cp-ai-card {
+  background: white;
+  margin: 0 16px;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.cp-ai-card-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 8px;
+}
+
+.cp-ai-icon { color: #F7A633; font-size: 16px; }
+
+.cp-ai-card-body {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.cp-ai-highlight {
+  color: #F7A633;
+  font-weight: 700;
+}
+
+.cp-blockchain-notice {
+  padding: 16px 20px 0;
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.5;
+}
+
+.cp-blockchain-notice p { margin: 0; }
+.cp-blockchain-notice p:first-child {
+  font-weight: 600;
+  color: #888;
+}

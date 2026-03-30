@@ -1,0 +1,40 @@
+.empty-page {
+  min-height: 100vh;
+  background: #f8f8f8;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 80px;
+}
+
+.empty-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px;
+}
+
+.empty-icon {
+  width: 80px;
+  opacity: 0.5;
+}
+
+.empty-emoji {
+  font-size: 56px;
+}
+
+.empty-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.empty-desc {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+  text-align: center;
+}

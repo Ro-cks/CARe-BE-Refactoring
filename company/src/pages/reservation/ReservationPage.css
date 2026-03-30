@@ -1,0 +1,177 @@
+/* ════════════════════════════════════════════
+   CARe — 예약 관리 페이지
+   ════════════════════════════════════════════ */
+
+.reservation-page {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding: 36px 40px 48px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ── 진입 애니메이션 ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position:  400px 0; }
+}
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* ════ HEADER ════ */
+.res-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-shrink: 0;
+  animation: fadeUp 0.45s 0.05s both;
+}
+
+.res-title {
+  font-size: 34px;
+  font-weight: 800;
+  color: #2d2d2d;
+  margin: 0 0 6px;
+  letter-spacing: -0.6px;
+}
+.res-subtitle {
+  font-size: 17px;
+  color: #9a9aaa;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ════ KPI 4열 그리드 ════ */
+.res-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  flex-shrink: 0;
+  animation: fadeUp 0.45s 0.12s both;
+}
+
+.res-kpi-card {
+  border-radius: 16px;
+  padding: 20px 24px;
+  background: rgba(255,252,248,0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(245,166,35,0.13);
+  box-shadow: 0 2px 16px rgba(180,155,110,0.09), 0 1px 0 rgba(255,255,255,0.85) inset;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.22s, box-shadow 0.22s;
+  border-left: 4px solid var(--ka, #ccc);
+}
+.res-kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(180,155,110,0.15);
+}
+
+.res-kpi-icon {
+  font-size: 24px;
+  width: 50px; height: 50px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ka) 12%, white);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.res-kpi-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #b0a898;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+.res-kpi-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #2d2d2d;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.res-kpi-unit {
+  font-size: 15px;
+  font-weight: 600;
+  color: #b0a898;
+  margin-left: 3px;
+}
+
+/* ════ 메인 콘텐츠 카드 ════ */
+.res-content-card {
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(255,252,248,0.82);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(245,166,35,0.13);
+  box-shadow: 0 2px 16px rgba(180,155,110,0.09), 0 1px 0 rgba(255,255,255,0.85) inset;
+  animation: fadeUp 0.45s 0.2s both;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.res-content-inner {
+  padding: 24px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.res-table-wrapper {
+  margin-top: 16px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ════ 로딩 & 빈 상태 ════ */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #9a9aaa;
+  font-weight: 600;
+  font-size: 16px;
+  animation: fadeIn 0.4s both;
+}
+.loading-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid #ede8e0;
+  border-top-color: #F5A623;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+/* ════ 반응형 ════ */
+@media (max-width: 1200px) {
+  .res-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 1024px) {
+  .reservation-page { padding: 24px 20px 36px; }
+  .res-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+}
+@media (max-width: 768px) {
+  .res-kpi-grid { grid-template-columns: 1fr; }
+  .res-content-inner { padding: 20px 16px; }
+}

@@ -1,0 +1,186 @@
+/* ════════════════════════════════════════════
+   CARe Dashboard v2 — Graph-first layout (Cleaned)
+   ════════════════════════════════════════════ */
+
+.dashboard-page {
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - var(--topbar-h, 64px));
+  overflow-y: auto;
+  padding: 24px 32px 32px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* 컴포넌트 간 간격 약간 넓힘 */
+}
+
+/* ── 공통 애니메이션 ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes chartDraw {
+  from { stroke-dashoffset: 1200; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes tooltipFade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulsering {
+  0%   { r: 8;  opacity: 0.3; }
+  100% { r: 16; opacity: 0;   }
+}
+
+/* ── 환영 카드 (1열) ── */
+.dash-welcome-card {
+  border-radius: 20px;
+  padding: 28px 32px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 8px 32px rgba(180, 155, 110, 0.12),
+    0 1px 0 rgba(255,255,255,0.95) inset,
+    inset 0 -1px 0 rgba(200,185,160,0.15);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 120px;
+  animation: fadeUp 0.4s both;
+  flex-shrink: 0;
+}
+.dash-welcome-card::before {
+  content: ''; position: absolute; right: -20px; top: -20px;
+  width: 140px; height: 140px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,166,35,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.dash-welcome-card::after {
+  content: ''; position: absolute; left: -10px; bottom: -20px;
+  width: 100px; height: 100px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,166,35,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+.dash-welcome-sub { font-size: 13px; color: #9a9aaa; margin: 0 0 6px; font-weight: 500; }
+.dash-welcome-name { font-size: 22px; font-weight: 800; color: #2d2d2d; margin: 0 0 8px; letter-spacing: -0.5px; }
+.dash-welcome-desc { font-size: 12.5px; color: #b0a898; margin: 0; font-weight: 500; line-height: 1.5; }
+.dash-welcome-illo {
+  position: relative; flex-shrink: 0; width: 80px; height: 60px;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.illo-car { font-size: 40px; filter: drop-shadow(0 4px 12px rgba(245,166,35,0.5)); animation: fadeUp 0.6s 0.3s both; }
+.illo-road { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, transparent, rgba(245,166,35,0.5), transparent); border-radius: 99px; }
+
+/* ── KPI 4열 그리드 (크게 키움) ── */
+.dash-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  flex-shrink: 0;
+}
+.dash-kpi-card {
+  border-radius: 18px;
+  padding: 24px 28px; /* 여백 확대 */
+  background: rgba(255,252,248,0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(245,166,35,0.13);
+  box-shadow: 0 4px 16px rgba(180,155,110,0.08);
+  display: flex;
+  align-items: center;
+  gap: 18px; /* 아이콘과 텍스트 사이 간격 확대 */
+  transition: transform 0.22s, box-shadow 0.22s;
+  animation: fadeUp 0.45s both;
+  border-left: 4px solid var(--ka, #F5A623);
+}
+.dash-kpi-card[data-delay="0"] { animation-delay: 0.1s; }
+.dash-kpi-card[data-delay="1"] { animation-delay: 0.16s; }
+.dash-kpi-card[data-delay="2"] { animation-delay: 0.22s; }
+.dash-kpi-card[data-delay="3"] { animation-delay: 0.28s; }
+.dash-kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(180,155,110,0.14);
+}
+.dash-kpi-icon {
+  font-size: 28px; /* 아이콘 크기 확대 */
+  width: 56px; height: 56px; /* 박스 크기 확대 */
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ka, #F5A623) 12%, white);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.dash-kpi-value {
+  font-size: 22px; /* 폰트 확대 */
+  font-weight: 800;
+  color: #2d2d2d; letter-spacing: -0.4px;
+  line-height: 1.1;
+}
+.dash-kpi-label {
+  font-size: 13px; font-weight: 700;
+  color: #9a9aaa; text-transform: uppercase;
+  letter-spacing: 0.3px; margin: 4px 0;
+}
+.dash-kpi-sub {
+  font-size: 12px; color: #b0a898; font-weight: 500;
+}
+
+.dash-chart-card {
+  border-radius: 20px;
+  padding: 24px 28px 20px;
+  background: rgba(255,252,248,0.88);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(245,166,35,0.12);
+  box-shadow: 0 2px 18px rgba(180,155,110,0.09), 0 1px 0 rgba(255,255,255,0.9) inset;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  /* 핵심 변경 포인트 */
+  flex: 1;             /* 남은 세로 영역을 모두 차지하도록 설정 */
+  min-height: 280px;   /* 화면이 작아져도 최소한의 높이는 유지 */
+  /* max-height: 380px; <-- 이 줄을 과감하게 삭제하세요! */
+
+  animation: fadeUp 0.5s 0.3s both;
+}
+
+.dash-chart-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.dash-chart-title { font-size: 16px; font-weight: 800; color: #2d2d2d; letter-spacing: -0.3px; }
+.dash-chart-sub { font-size: 12px; color: #b0a898; font-weight: 500; margin-top: 3px; }
+
+.dash-period-tabs { display: flex; gap: 4px; background: #f0ebe3; border-radius: 8px; padding: 3px; }
+.dash-period-btn {
+  border: none; background: transparent; font-size: 12px; font-weight: 600;
+  color: #9a9aaa; padding: 5px 12px; border-radius: 6px; cursor: pointer;
+  transition: all 0.18s; font-family: inherit;
+}
+.dash-period-btn.active { background: #fff; color: #2d2d2d; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+
+/* 월 레이블 */
+.dash-chart-labels { display: flex; justify-content: space-between; padding: 0 40px; }
+.dash-chart-month { font-size: 11px; font-weight: 600; color: #c0b8a8; text-align: center; flex: 1; }
+
+/* SVG 차트 */
+.spline-svg { width: 100%; flex: 1; min-height: 0; overflow: visible; }
+.chart-tooltip-g { animation: tooltipFade 0.15s ease both; pointer-events: none; }
+.chart-line-path { stroke-dasharray: 1200; stroke-dashoffset: 0; animation: chartDraw 1.4s cubic-bezier(0.22,1,0.36,1) 0.3s both; }
+.chart-pulse-ring { animation: pulsering 1.6s ease-out 1s infinite; }
+
+/* 하단 요약 */
+.dash-chart-footer { display: flex; align-items: center; gap: 0; padding-top: 12px; border-top: 1px solid #f0ebe3; }
+.dash-chart-stat { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.dash-chart-stat-value { font-size: 18px; font-weight: 800; color: #2d2d2d; letter-spacing: -0.5px; }
+.dash-chart-stat-label { font-size: 11px; color: #b0a898; font-weight: 600; }
+.dash-chart-divider { width: 1px; height: 32px; background: #ede8e0; }
+
+/* ════ 반응형 ════ */
+@media (max-width: 1200px) {
+  .dash-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .dashboard-page { padding: 20px 16px 36px; }
+  .dash-kpi-grid { grid-template-columns: 1fr; }
+}

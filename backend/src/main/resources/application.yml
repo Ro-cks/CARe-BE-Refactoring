@@ -1,0 +1,111 @@
+# ===========================================
+# 공통 설정 (모든 프로파일 공통)
+# ===========================================
+server:
+  servlet:
+    context-path: ${CONTEXT_PATH:/api}
+  forward-headers-strategy: framework
+
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+  profiles:
+    active: local
+  application:
+    name: care
+  config:
+    import:
+      - optional:file:.env
+      - optional:file:.env.local
+
+logging:
+  level:
+    root: ${LOGGING_LEVEL_ROOT:info}
+    com.care: debug
+    org.springframework.integration: info
+
+---
+# ===========================================
+# local 프로파일 전용 설정
+# ===========================================
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:care}
+    username: ${DB_USER:root}
+    password: ${DB_PASS:1234}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${JPA_SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+jwt:
+  secret: ${JWT_SECRET:}
+  access-token-expiration: 604800000
+  refresh-token-expiration: 604800000
+
+apick:
+  api-key: ${APICK_API_KEY:}
+
+nts:
+  api-key: ${NTS_API_KEY:}
+
+privy:
+  app-id: ${PRIVY_APP_ID:}
+  app-secret: ${PRIVY_APP_SECRET:}
+  server-url: ${PRIVY_SERVER_URL:http://localhost:3001}
+
+pinata:
+  api-key: ${PINATA_API_KEY:}
+  api-secret: ${PINATA_API_SECRET:}
+  jwt: ${PINATA_JWT:}
+
+aws:
+  s3:
+    access-key: ${AWS_ACCESS_KEY_ID:}
+    secret-key: ${AWS_SECRET_ACCESS_KEY:}
+    region: ${AWS_REGION:ap-northeast-2}
+    bucket: ${S3_BUCKET_NAME:}
+  cloudfront:
+    domain: ${CLOUDFRONT_DOMAIN:}
+
+blockchain:
+  rpc-url: ${RPC_URL:https://rpc.ssafy-blockchain.com}
+  private-key: ${PRIVATE_KEY:your-private-key-here}
+  chain-id: ${CHAIN_ID:31221}
+  contracts:
+    car-nft: ${CAR_NFT_ADDRESS:}
+    did-registry: ${DID_REGISTRY_ADDRESS:}
+    mock-usdc: ${MOCK_USDC_ADDRESS:}
+    dispute-settlement: ${DISPUTE_SETTLEMENT_ADDRESS:}
+    rental: ${RENTAL_CONTRACT_ADDRESS:}
+
+ai:
+  server:
+    url: ${AI_YOLO_URL:http://localhost:8000}
+    face-url: ${AI_FACE_URL:http://localhost:8001}
+  scratch:
+    similarity-threshold: ${AI_SCRATCH_SIMILARITY_THRESHOLD:60.0}
+
+gms:
+  api-key: ${GMS_KEY:}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs

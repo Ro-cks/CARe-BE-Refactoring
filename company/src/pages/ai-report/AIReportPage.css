@@ -1,0 +1,656 @@
+.ai-report-page {
+  padding: 24px 40px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.loading-card,
+.error-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+}
+
+.error-card {
+  color: #b02a37;
+  border: 1px solid #f5c2c7;
+  background: #fff5f5;
+}
+
+.warning-panel {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #fff6e6;
+  border: 1px solid #ffd79a;
+  color: #8f5b00;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px;
+  color: #212529;
+}
+
+.page-title {
+  flex: 1;
+  font-size: 24px;
+  font-weight: 700;
+  color: #212529;
+  margin: 0 0 0 16px;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Report Header */
+.report-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.car-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.car-icon {
+  font-size: 48px;
+}
+
+.car-plate-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.car-plate {
+  font-size: 28px;
+  font-weight: 700;
+  color: #212529;
+  margin: 0;
+}
+
+.damage-badge {
+  padding: 6px 12px;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.car-meta {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 0;
+}
+
+.comparison-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+  overflow-y: auto;
+}
+
+.comparison-item {
+  border: 1px solid #e4e7eb;
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.comparison-item.selected {
+  border-color: #f7a633;
+  box-shadow: 0 0 0 3px rgba(247, 166, 51, 0.15);
+}
+
+.comparison-item-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.comparison-item-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #212529;
+}
+
+.comparison-item-badge {
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 8px;
+}
+
+.comparison-item-badge.warn {
+  background: #ffe7e9;
+  color: #b02a37;
+}
+
+.comparison-item-badge.safe {
+  background: #e8f7ed;
+  color: #1f7a3d;
+}
+
+.comparison-item-badge.new-scratch {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.comparison-item-meta {
+  margin: 0;
+  color: #68717c;
+  font-size: 12px;
+}
+
+.empty-message {
+  margin: 0;
+  font-size: 13px;
+  color: #6c757d;
+}
+
+.deposit-status {
+  text-align: right;
+}
+
+.status-label {
+  font-size: 13px;
+  color: #6c757d;
+  margin: 0 0 4px 0;
+}
+
+.status-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #28a745;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-icon {
+  font-size: 20px;
+}
+
+/* Report Content */
+.report-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+}
+
+.left-section,
+.right-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.damage-map-card,
+.damage-detail-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #212529;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.warning-icon {
+  font-size: 20px;
+  color: #dc3545;
+}
+
+/* Car Diagram — renter DamageHistoryPage .dh-car-diagram 구조와 동일 */
+.car-diagram {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.car-map-wrap {
+  position: relative;
+  width: 200px;
+  height: 280px;
+  flex-shrink: 0;
+}
+
+.car-map-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Zone Markers */
+.zone-marker {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 2.5px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+
+.zone-marker.zone-empty {
+  background: rgba(180, 180, 180, 0.3);
+  border-color: rgba(255,255,255,0.5);
+  pointer-events: none;
+}
+
+.zone-marker.zone-safe {
+  background: #0d6efd;
+  cursor: pointer;
+}
+
+.zone-marker.zone-warning {
+  background: #dc3545;
+  cursor: pointer;
+  animation: zone-pulse 1.8s ease-out infinite;
+}
+
+.zone-marker.marker-selected {
+  transform: translate(-50%, -50%) scale(1.3);
+  box-shadow: 0 0 0 3px white, 0 0 0 5px currentColor;
+  z-index: 2;
+}
+
+.zone-marker:not(.zone-empty):hover {
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.zone-count {
+  font-size: 11px;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+}
+
+@keyframes zone-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(220,53,69,0.6), 0 2px 6px rgba(0,0,0,0.2); }
+  70%  { box-shadow: 0 0 0 8px rgba(220,53,69,0), 0 2px 6px rgba(0,0,0,0.2); }
+  100% { box-shadow: 0 0 0 0 rgba(220,53,69,0),   0 2px 6px rgba(0,0,0,0.2); }
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-dot.existing {
+  background-color: #0d6efd;
+}
+
+.legend-dot.bidirectional {
+  background-color: #ffc107;
+}
+
+.legend-dot.new {
+  background-color: #dc3545;
+}
+
+.legend-text {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Damage Detail */
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.ipfs-download-btn {
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #495057;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ipfs-download-btn:hover {
+  background-color: #e9ecef;
+}
+
+/* Comparison Images */
+.comparison-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.image-container.highlighted {
+  border: 3px solid #dc3545;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.image-label {
+  font-size: 13px;
+  color: #6c757d;
+  margin: 0;
+  text-align: center;
+}
+
+.damage-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.no-before-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  color: #6c757d;
+  text-align: center;
+  gap: 6px;
+}
+
+.no-before-icon {
+  font-size: 32px;
+}
+
+.no-before-sub {
+  font-size: 12px;
+  color: #adb5bd;
+  margin: 0;
+}
+
+.new-scratch-notice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  background: #fff8e1;
+  border: 1px solid #ffe082;
+  border-radius: 8px;
+  text-align: center;
+  gap: 8px;
+}
+
+.new-scratch-icon {
+  font-size: 32px;
+}
+
+.new-scratch-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #856404;
+  margin: 0;
+}
+
+.new-scratch-desc {
+  font-size: 13px;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Similarity Section */
+.similarity-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.similarity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.similarity-label {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.similarity-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #dc3545;
+}
+
+.similarity-bar {
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.similarity-fill {
+  height: 100%;
+  background-color: #dc3545;
+  transition: width 0.3s;
+}
+
+.similarity-description {
+  font-size: 13px;
+  color: #495057;
+  margin: 0;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.info-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.approve-btn,
+.dispute-btn {
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.approve-btn {
+  background-color: #6c757d;
+  color: white;
+}
+
+.approve-btn:hover {
+  background-color: #5a6268;
+}
+
+.dispute-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.dispute-btn:hover {
+  background-color: #c82333;
+}
+
+.action-note {
+  font-size: 12px;
+  color: #6c757d;
+  text-align: center;
+  margin: 0;
+}
+
+.dispute-create-box {
+  margin-bottom: 12px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+}
+
+.dispute-create-title {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2f3640;
+}
+
+.dispute-create-meta {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.dispute-input {
+  width: 100%;
+  border: 1px solid #d6dbe1;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.dispute-reason {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.create-error {
+  margin: 0;
+  color: #b02a37;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.create-loading {
+  margin: 0;
+  color: #495057;
+  font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .report-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .ai-report-page {
+    padding: 16px;
+  }
+
+  .report-header {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .deposit-status {
+    text-align: left;
+  }
+
+  .comparison-images {
+    grid-template-columns: 1fr;
+  }
+
+  .action-buttons {
+    grid-template-columns: 1fr;
+  }
+}

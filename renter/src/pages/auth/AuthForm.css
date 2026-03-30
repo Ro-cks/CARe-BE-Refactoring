@@ -1,0 +1,236 @@
+/* ===== 공통 버튼 ===== */
+.btn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #F7A633;
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #e89420;
+}
+
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #e5e5e5;
+}
+
+/* ===== 인증 레이아웃 ===== */
+.auth-container {
+  min-height: 100vh;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+}
+
+.auth-logo-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.auth-logo {
+  width: 180px;
+}
+
+/* ===== 카드 ===== */
+.auth-card {
+  width: 100%;
+  max-width: 400px;
+  border: 1.5px solid #F7A633;
+  border-radius: 16px;
+  padding: 24px 20px 20px;
+}
+
+/* ===== 폼 요소 ===== */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #222;
+  background: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #bbb;
+}
+
+.form-input:focus {
+  border-color: #F7A633;
+}
+
+.form-submit {
+  margin-top: 8px;
+}
+
+.form-error {
+  font-size: 13px;
+  color: #e53e3e;
+  margin: -8px 0 10px;
+  padding: 0;
+}
+
+/* ===== 링크 ===== */
+.auth-link {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 14px;
+  color: #F7A633;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* ===== 회원가입 스텝 ===== */
+.signup-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 24px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.signup-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #eee;
+  color: #aaa;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.signup-step.active .step-num {
+  background: #F7A633;
+  color: #fff;
+}
+
+.signup-step.done .step-num {
+  background: #4caf50;
+  color: #fff;
+  cursor: pointer;
+}
+
+.step-label {
+  font-size: 11px;
+  color: #aaa;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.signup-step.active .step-label,
+.signup-step.done .step-label {
+  color: #333;
+}
+
+.signup-step-line {
+  flex: 1;
+  height: 2px;
+  background: #eee;
+  margin: 0 8px;
+  margin-bottom: 14px;
+  transition: background 0.2s;
+}
+
+.signup-step-line.active {
+  background: #F7A633;
+}
+
+/* ===== 언어 선택 (회원가입) ===== */
+.signup-lang-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.signup-lang-card {
+  padding: 8px 4px !important;
+}
+
+.signup-lang-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.signup-lang-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #222;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.signup-lang-item:hover {
+  background: #fff8ed;
+}
+
+.signup-lang-item.selected {
+  background: #fff8ed;
+  color: #F7A633;
+  font-weight: 700;
+}

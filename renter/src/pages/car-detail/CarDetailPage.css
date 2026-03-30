@@ -1,0 +1,549 @@
+/* ── 전체 컨테이너 ──────────────────────── */
+.cd-wrap {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 헤더 ───────────────────────────────── */
+.cd-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cd-logo {
+  width: 68px;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.cd-back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cd-header-title {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cd-fav {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── 스크롤 영역 ─────────────────────────── */
+.cd-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ── 이미지 슬라이더 ─────────────────────── */
+.cd-img-area {
+  position: relative;
+  height: 210px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.cd-car-img {
+  font-size: 110px;
+  line-height: 1;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.10));
+}
+
+.cd-car-img-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cd-arr {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #ccc;
+  cursor: pointer;
+  padding: 8px;
+  line-height: 1;
+}
+
+.cd-arr-l { left: 6px; }
+.cd-arr-r { right: 6px; }
+
+.cd-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+}
+
+.cd-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ddd;
+  transition: all 0.2s;
+}
+
+.cd-dot.on {
+  background: #F7A633;
+  width: 14px;
+  border-radius: 3px;
+}
+
+/* ── 평점 ────────────────────────────────── */
+.cd-rating {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 10px 20px 0;
+}
+
+.cd-star  { color: #F7A633; font-size: 14px; }
+.cd-rv    { font-size: 14px; font-weight: 700; color: #111; }
+.cd-rcnt  { font-size: 13px; color: #999; }
+
+/* ── 섹션 공통 ───────────────────────────── */
+.cd-section {
+  padding: 24px 20px 0;
+}
+
+.cd-section-last {
+  padding-bottom: 0;
+}
+
+.cd-sec-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 14px;
+}
+
+/* ── 차량 사양 그리드 ────────────────────── */
+.cd-spec-grid {
+  display: flex;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cd-spec-cell {
+  flex: 1;
+  padding: 14px 10px;
+  text-align: center;
+}
+
+.cd-spec-mid {
+  border-left: 1px solid #e8e8e8;
+  border-right: 1px solid #e8e8e8;
+}
+
+.cd-spec-lbl {
+  font-size: 12px;
+  color: #999;
+  margin: 0 0 6px;
+}
+
+.cd-spec-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+/* ── 보험 카드 ────────────────────────────── */
+.cd-ins-row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.cd-ins-row::-webkit-scrollbar { display: none; }
+
+.cd-ins-card {
+  flex-shrink: 0;
+  width: 125px;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 12px 12px 14px;
+  background: #fafafa;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.18s;
+  font-family: inherit;
+}
+
+.cd-ins-card.sel {
+  border-color: #F7A633;
+  background: #F7A633;
+}
+
+.cd-ins-ico {
+  font-size: 18px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.cd-ins-lbl {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 4px;
+}
+
+.cd-ins-card.sel .cd-ins-lbl,
+.cd-ins-card.sel .cd-ins-cov,
+.cd-ins-card.sel .cd-ins-ded {
+  color: #fff;
+}
+
+.cd-ins-price {
+  font-size: 22px;
+  font-weight: 800;
+  color: #F7A633;
+  margin: 0 0 6px;
+  line-height: 1.1;
+}
+
+.cd-ins-card.sel .cd-ins-price {
+  color: #fff;
+}
+
+.cd-ins-cov {
+  font-size: 11px;
+  font-weight: 500;
+  color: #555;
+  margin: 0 0 3px;
+}
+
+.cd-ins-ded {
+  font-size: 10px;
+  color: #888;
+  margin: 0;
+}
+
+/* ── 포함 서비스 ─────────────────────────── */
+.cd-svc-box {
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cd-svc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 14px 16px;
+  row-gap: 6px;
+}
+
+.cd-svc-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.cd-svc-chk {
+  font-size: 13px;
+  font-weight: 700;
+  color: #F7A633;
+  flex-shrink: 0;
+}
+
+.cd-svc-x {
+  font-size: 13px;
+  color: #ccc;
+  flex-shrink: 0;
+}
+
+.cd-svc-name {
+  font-size: 13px;
+  color: #333;
+}
+
+.cd-svc-off {
+  color: #ccc;
+  text-decoration: line-through;
+}
+
+.cd-company {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid #f0f0f0;
+  background: #fafafa;
+}
+
+.cd-co-logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: #2d5ba6;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cd-co-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+}
+
+.cd-co-link {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: #F7A633;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ── 약관 ────────────────────────────────── */
+.cd-term-all {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.cd-term-all-txt {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+}
+
+/* 체크박스 */
+.cd-chk {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid #ddd;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: transparent;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  cursor: pointer;
+}
+
+.cd-chk.chk-on {
+  background: #F7A633;
+  border-color: #F7A633;
+  color: #fff;
+}
+
+.cd-term-wrap {
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.cd-term-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.cd-term-txt {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.cd-term-req {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.cd-chev {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── AI 요약 패널 ────────────────────────── */
+.cd-ai-box {
+  background: #fafafa;
+  padding: 14px 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.cd-ai-btn {
+  background: #F7A633;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 12px;
+}
+
+.cd-ai-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.cd-ai-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.cd-ai-ico { font-size: 15px; flex-shrink: 0; }
+
+.cd-ai-ttl {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 2px;
+}
+
+.cd-ai-dsc {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+}
+
+.cd-trans-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.cd-trans {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.cd-trans.trans-on {
+  border-color: #F7A633;
+  color: #F7A633;
+  font-weight: 700;
+}
+
+.cd-term-body {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* ── 하단 고정 바 ────────────────────────── */
+.cd-bar {
+  position: fixed;
+  bottom: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 40;
+}
+
+.cd-bar-lbl {
+  font-size: 12px;
+  color: #999;
+  margin: 0 0 2px;
+}
+
+.cd-bar-amt {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+}
+
+.cd-bar-unit {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.cd-bar-btn {
+  background: #F7A633;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 26px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.cd-bar-btn:active { opacity: 0.85; }

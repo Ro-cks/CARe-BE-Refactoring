@@ -1,0 +1,217 @@
+/* ── 전체 ────────────────────────────────── */
+.bc-wrap {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── 헤더 ────────────────────────────────── */
+.bc-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.bc-logo {
+  width: 68px;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.bc-back {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.bc-title {
+  flex: 1;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+/* ── 스크롤 ──────────────────────────────── */
+.bc-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 140px;
+}
+
+/* ── 체크 영역 ───────────────────────────── */
+.bc-check-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 24px;
+}
+
+.bc-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #F7A633;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(247, 166, 51, 0.30);
+}
+
+.bc-msg {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 8px;
+}
+
+.bc-amount {
+  font-size: 28px;
+  font-weight: 800;
+  color: #F7A633;
+  margin: 0;
+}
+
+/* ── 차량 이미지 ─────────────────────────── */
+.bc-car-area {
+  padding: 0 20px;
+  margin-bottom: 24px;
+}
+
+.bc-car-img {
+  width: 100%;
+  height: 170px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.bc-car-emoji {
+  font-size: 90px;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,0.10));
+}
+
+.bc-car-name {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+/* ── 예약 상세 카드 ──────────────────────── */
+.bc-info-card {
+  background: #f8f8f8;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin: 0 20px;
+}
+
+.bc-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  margin: 0 0 10px;
+}
+
+.bc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+  border-bottom: 1px solid #efefef;
+}
+
+.bc-row-last {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.bc-row-lbl {
+  font-size: 13px;
+  color: #888;
+}
+
+.bc-row-val {
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  text-align: right;
+}
+
+/* ── 안내 문구 ───────────────────────────── */
+.bc-notice {
+  text-align: center;
+  font-size: 12px;
+  color: #bbb;
+  line-height: 1.7;
+  margin: 20px 20px 0;
+}
+
+/* ── 닫기 버튼 ───────────────────────────── */
+.bc-btn-area {
+  position: fixed;
+  bottom: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  padding: 12px 20px;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+  z-index: 40;
+}
+
+.bc-btn {
+  width: 100%;
+  background: #F7A633;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 17px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.bc-btn:active { opacity: 0.85; }
+
+.bc-btn-area {
+  display: flex;
+  gap: 10px;
+}
+
+.bc-btn-ghost {
+  flex: 1;
+  background: #f5f5f5;
+  color: #555;
+  border: none;
+  border-radius: 14px;
+  padding: 17px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+.bc-btn-ghost:active { opacity: 0.8; }
+
+.bc-btn {
+  flex: 2;
+}

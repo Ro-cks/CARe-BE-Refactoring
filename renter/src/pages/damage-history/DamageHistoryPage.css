@@ -1,0 +1,522 @@
+.dh-page {
+  min-height: 100vh;
+  background: #f5f5f7;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 80px;
+}
+
+/* 헤더 */
+.dh-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background: white;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dh-back {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dh-title {
+  flex: 1;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+  margin: 0;
+}
+
+.dh-verified-badge {
+  background: #FFF3E0;
+  color: #F7A633;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* 스크롤 */
+.dh-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* 상단 섹션 */
+.dh-top-section {
+  background: white;
+  padding: 20px 20px 16px;
+}
+
+.dh-heading-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.dh-heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+}
+
+.dh-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #f5f5f7;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+}
+
+.dh-sub {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.dh-sub strong {
+  color: #F7A633;
+  font-weight: 700;
+}
+
+/* 차체 다이어그램 */
+.dh-diagram-section {
+  background: white;
+  margin-top: 1px;
+  padding: 24px 20px;
+}
+
+.dh-diagram-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.dh-car-diagram {
+  position: relative;
+  width: 200px;
+  height: 280px;
+}
+
+.dh-car-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 손상 마커 */
+.dh-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: transform 0.15s;
+}
+
+.dh-marker:active {
+  transform: translate(-50%, -50%) scale(0.9);
+}
+
+.dh-marker.pending {
+  background: #F7A633;
+}
+
+.dh-marker.resolved {
+  background: #4CAF50;
+}
+
+.dh-marker-count {
+  font-size: 11px;
+  font-weight: 800;
+  color: white;
+}
+
+/* AI 카드 */
+.dh-ai-card {
+  background: white;
+  margin: 8px 0 0;
+  padding: 18px 20px;
+}
+
+.dh-ai-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.dh-ai-icon {
+  font-size: 16px;
+}
+
+.dh-ai-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+}
+
+.dh-ai-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.6;
+  margin: 0 0 14px;
+}
+
+.dh-ai-desc strong {
+  color: #F7A633;
+}
+
+.dh-ai-stats {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #f8f8f8;
+  border-radius: 12px;
+  padding: 12px 20px;
+}
+
+.dh-ai-stat {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dh-ai-stat-divider {
+  width: 1px;
+  height: 20px;
+  background: #e0e0e0;
+  margin: 0 12px;
+}
+
+.dh-ai-stat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pending-dot {
+  background: #F7A633;
+}
+
+.resolved-dot {
+  background: #4CAF50;
+}
+
+.dh-ai-stat-label {
+  font-size: 13px;
+  color: #888;
+}
+
+.dh-ai-stat-count {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  margin-left: auto;
+}
+
+/* 목록 */
+.dh-list {
+  background: white;
+  margin-top: 8px;
+}
+
+.dh-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #f5f5f7;
+  background: white;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.dh-list-item:last-child {
+  border-bottom: none;
+}
+
+.dh-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dh-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dh-item-desc {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 2px;
+}
+
+.dh-item-meta {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0;
+}
+
+.dh-item-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dh-status-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.badge-pending {
+  background: #FFF3E0;
+  color: #F7A633;
+}
+
+.badge-resolved {
+  background: #E8F5E9;
+  color: #4CAF50;
+}
+
+.dh-list-loading {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.dh-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #eee;
+  border-top-color: #F7A633;
+  border-radius: 50%;
+  animation: dh-spin 0.8s linear infinite;
+}
+
+@keyframes dh-spin {
+  to { transform: rotate(360deg); }
+}
+
+.dh-list-empty {
+  text-align: center;
+  font-size: 14px;
+  color: #bbb;
+  padding: 40px 20px;
+  background: white;
+  margin-top: 8px;
+}
+
+/* 탭 바 */
+.dh-tab-bar {
+  position: relative;
+  display: flex;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dh-tab-btn {
+  flex: 1;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.dh-tab-btn.active {
+  color: #F7A633;
+}
+
+.dh-tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: 2px;
+  background: #F7A633;
+  border-radius: 2px 2px 0 0;
+  transition: left 0.25s ease;
+}
+
+.dh-tab-indicator.right {
+  left: 50%;
+}
+
+/* 차량 이미지 다이어그램 */
+.dh-car-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dh-no-marker-msg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  color: #aaa;
+  background: rgba(255,255,255,0.85);
+  padding: 6px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+}
+
+/* 블록체인 해시 */
+.dh-item-hash {
+  font-size: 10px;
+  color: #bbb;
+  font-family: monospace;
+  margin: 2px 0 0;
+  letter-spacing: 0.3px;
+}
+
+/* 빈 상태 */
+.dh-empty-icon {
+  display: block;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+/* 전체 이력 그룹 */
+.dh-history-groups {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dh-history-group {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+
+.dh-history-group.current {
+  border: 2px solid #F7A633;
+  box-shadow: 0 2px 12px rgba(247,166,51,0.15);
+}
+
+.dh-history-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #fafafa;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dh-history-group.current .dh-history-group-header {
+  background: #FFF8EE;
+}
+
+.dh-history-group-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.dh-history-renter {
+  font-size: 14px;
+  font-weight: 700;
+  color: #222;
+}
+
+.dh-history-period {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.dh-history-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dh-current-badge {
+  background: #F7A633;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.dh-history-count {
+  font-size: 13px;
+  font-weight: 700;
+  color: #555;
+}
+
+.dh-history-items {
+  padding: 0 4px;
+}
+
+.dh-history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px;
+  border-bottom: 1px solid #f5f5f7;
+}
+
+.dh-history-item:last-child {
+  border-bottom: none;
+}
+
+.dh-history-item-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.dh-history-no-scratch {
+  font-size: 13px;
+  color: #bbb;
+  text-align: center;
+  padding: 16px;
+  margin: 0;
+}

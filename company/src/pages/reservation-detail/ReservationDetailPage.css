@@ -1,0 +1,306 @@
+/* ════════════════════════════════════════════
+   CARe — 예약 상세 페이지
+   ════════════════════════════════════════════ */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+.rdp-page {
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  padding: 24px 32px 40px;
+  box-sizing: border-box;
+  background: #faf9f7;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
+}
+
+/* ── 로딩 / 에러 ── */
+.rdp-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 16px;
+  color: #9a9aaa;
+  font-size: 16px;
+  font-weight: 600;
+}
+.rdp-spinner {
+  width: 32px; height: 32px;
+  border: 3px solid #ede8e0;
+  border-top-color: #F5A623;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.rdp-error-icon { font-size: 36px; }
+
+/* ── 헤더 카드 ── */
+.rdp-header-card {
+  border-radius: 20px;
+  padding: 22px 28px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 8px 32px rgba(180, 155, 110, 0.08), 0 1px 0 rgba(255,255,255,0.95) inset;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  animation: fadeUp 0.4s both;
+  flex-shrink: 0;
+}
+
+.rdp-back-btn {
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4a4a5a;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.rdp-back-btn:hover { background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+
+.rdp-header-info { flex: 1; min-width: 0; }
+.rdp-header-meta { font-size: 12px; color: #b0a898; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.3px; }
+.rdp-car-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #2d2d2d;
+  margin: 0;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rdp-status-badge {
+  padding: 9px 18px;
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.rdp-status-badge.reserved   { background: #eef2ff; color: #3d4ecf; }
+.rdp-status-badge.in-use     { background: #fff3e0; color: #b45309; }
+.rdp-status-badge.after-scan { background: #fef3c7; color: #92400e; }
+.rdp-status-badge.completed  { background: #e8f7ef; color: #1a7a45; }
+.rdp-status-badge.dispute    { background: #fdecea; color: #c0392b; }
+
+/* ── 본문 그리드 ── */
+.rdp-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+.rdp-main-col,
+.rdp-side-col { display: flex; flex-direction: column; gap: 16px; }
+
+/* ── 카드 공통 ── */
+.rdp-card {
+  border-radius: 18px;
+  padding: 22px 26px;
+  background: rgba(255,252,248,0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(245,166,35,0.12);
+  box-shadow: 0 4px 16px rgba(180,155,110,0.08), 0 1px 0 rgba(255,255,255,0.85) inset;
+  animation: fadeUp 0.45s both;
+}
+.rdp-main-col .rdp-card:nth-child(1) { animation-delay: 0.08s; }
+.rdp-main-col .rdp-card:nth-child(2) { animation-delay: 0.13s; }
+.rdp-main-col .rdp-card:nth-child(3) { animation-delay: 0.18s; }
+.rdp-side-col .rdp-card:nth-child(1) { animation-delay: 0.1s; }
+.rdp-side-col .rdp-card:nth-child(2) { animation-delay: 0.16s; }
+
+.rdp-card-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #2d2d2d;
+  margin: 0 0 18px;
+  letter-spacing: -0.3px;
+}
+
+/* ── 정보 목록 ── */
+.rdp-info-list { display: flex; flex-direction: column; }
+.rdp-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f2ed;
+}
+.rdp-info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.rdp-info-label { font-size: 14px; color: #9a9aaa; font-weight: 600; }
+.rdp-info-value { font-size: 15px; color: #2d2d2d; font-weight: 600; }
+.rdp-mono { font-family: 'Courier New', monospace; font-weight: 700; font-size: 14px; }
+.rdp-email { font-size: 13px; }
+
+/* ── 대여 일정 ── */
+.rdp-schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.rdp-schedule-item {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.rdp-schedule-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.rdp-pickup .rdp-schedule-dot { background: #4A90E2; }
+.rdp-return .rdp-schedule-dot { background: #7ED321; }
+.rdp-schedule-label { font-size: 12px; color: #9a9aaa; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+.rdp-schedule-date  { font-size: 15px; color: #2d2d2d; font-weight: 700; }
+.rdp-schedule-arrow { font-size: 18px; color: #c8c0b4; flex-shrink: 0; }
+
+/* ── 이용 상태 박스 ── */
+.rdp-status-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.rdp-status-box {
+  border-radius: 14px;
+  padding: 16px 18px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
+}
+.rdp-status-box.done    { background: #e8f7ef; border-color: #34d399; }
+.rdp-status-box.pending { background: #f9f7f4; border-color: #ede8e0; }
+
+.rdp-status-box-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.rdp-check-icon { font-size: 16px; font-weight: 800; }
+.rdp-status-box.done    .rdp-check-icon { color: #1a7a45; }
+.rdp-status-box.pending .rdp-check-icon { color: #c8c0b4; }
+
+.rdp-status-box-label { font-size: 14px; font-weight: 700; color: #2d2d2d; }
+.rdp-status-box-date  { font-size: 13px; color: #7a7a8a; font-weight: 500; padding-left: 24px; }
+
+/* ── 분쟁 알림 배너 ── */
+.rdp-dispute-alert {
+  background: #fdecea;
+  border: 1px solid #fca5a5;
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 14px;
+  color: #c0392b;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+/* ── 액션 버튼 ── */
+.rdp-action-row {
+  display: flex;
+  gap: 10px;
+}
+.rdp-btn-dispute {
+  flex: 1;
+  padding: 12px 16px;
+  background: #fff0f0;
+  border: 1px solid #fca5a5;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #c0392b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.rdp-btn-dispute:hover { background: #ffe4e4; box-shadow: 0 3px 10px rgba(208,2,27,0.1); }
+
+.rdp-btn-ai {
+  flex: 1;
+  padding: 12px 16px;
+  background: #2d2d2d;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.rdp-btn-ai:hover { background: #1a1a2e; box-shadow: 0 4px 14px rgba(0,0,0,0.2); transform: translateY(-1px); }
+
+/* ── 결제 정보 ── */
+.rdp-payment-list { display: flex; flex-direction: column; }
+.rdp-payment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+}
+.rdp-payment-label { font-size: 14px; color: #9a9aaa; font-weight: 600; }
+.rdp-payment-value { font-size: 15px; color: #2d2d2d; font-weight: 600; }
+.rdp-payment-divider { height: 1px; background: #ede8e0; margin: 4px 0; }
+
+.rdp-total-row .rdp-payment-label {
+  font-size: 15px;
+  color: #2d2d2d;
+  font-weight: 700;
+}
+.rdp-payment-total {
+  font-size: 22px;
+  font-weight: 800;
+  color: #2d2d2d;
+  letter-spacing: -0.5px;
+}
+
+/* ── 채팅 버튼 ── */
+.rdp-btn-chat {
+  width: 100%;
+  padding: 13px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid #ede8e0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #4a4a5a;
+  cursor: pointer;
+  transition: all 0.2s;
+  animation: fadeUp 0.45s 0.22s both;
+}
+.rdp-btn-chat:hover { border-color: #d0c8b8; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+/* ── 반응형 ── */
+@media (max-width: 1100px) {
+  .rdp-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .rdp-page { padding: 16px 20px 32px; }
+  .rdp-header-card { flex-wrap: wrap; gap: 12px; }
+  .rdp-status-boxes { grid-template-columns: 1fr; }
+  .rdp-schedule-row { flex-direction: column; }
+  .rdp-schedule-arrow { transform: rotate(90deg); }
+  .rdp-action-row { flex-direction: column; }
+}

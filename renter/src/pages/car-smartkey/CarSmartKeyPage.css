@@ -1,0 +1,458 @@
+.sk-page {
+  min-height: 100vh;
+  background: #f5f5f7;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 32px;
+}
+
+/* 헤더 */
+.sk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 56px 20px 16px;
+  background: white;
+}
+
+.sk-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sk-header-icon {
+  width: 36px;
+  height: 36px;
+  background: #FFF3E0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sk-header-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: -0.3px;
+}
+
+.sk-close-btn {
+  background: #f5f5f5;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* 차량 카드 */
+.sk-car-card {
+  background: white;
+  margin: 8px 16px 0;
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.sk-car-label {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0 0 4px;
+}
+
+.sk-car-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: #111;
+  margin: 0 0 2px;
+  letter-spacing: -0.3px;
+}
+
+.sk-car-plate {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.sk-battery {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.sk-battery-icon {
+  width: 36px;
+  height: 18px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sk-battery-icon::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 8px;
+  background: #ddd;
+  border-radius: 0 2px 2px 0;
+}
+
+.sk-battery-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: #4CAF50;
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+.sk-battery-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4CAF50;
+}
+
+/* 픽업 조건 배너 */
+.sk-prereq-banner {
+  margin: 12px 16px 0;
+  background: white;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sk-prereq-steps {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.sk-prereq-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  color: #bbb;
+}
+
+.sk-prereq-step.done {
+  color: #F7A633;
+}
+
+.sk-prereq-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #aaa;
+}
+
+.sk-prereq-step.done .sk-prereq-dot {
+  background: #F7A633;
+  color: white;
+}
+
+.sk-prereq-dot.lock {
+  background: #ddd;
+}
+
+.sk-prereq-line {
+  flex: 1;
+  height: 2px;
+  background: #e5e5e5;
+  margin-bottom: 18px;
+  max-width: 32px;
+}
+
+.sk-prereq-desc {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+  text-align: center;
+}
+
+.sk-prereq-btn {
+  width: 100%;
+  background: #F7A633;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.sk-prereq-btn:active { opacity: 0.85; }
+
+/* 잠금 버튼 섹션 */
+.sk-lock-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px 20px;
+  gap: 14px;
+}
+
+.sk-lock-btn {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #FFD580, #F7A633);
+  box-shadow:
+    0 8px 32px rgba(247, 166, 51, 0.5),
+    0 0 0 8px rgba(247, 166, 51, 0.15),
+    0 0 0 16px rgba(247, 166, 51, 0.06);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.sk-lock-btn.locked {
+  background: linear-gradient(145deg, #aaa, #777);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.2),
+    0 0 0 8px rgba(0,0,0,0.06),
+    0 0 0 16px rgba(0,0,0,0.02);
+}
+
+.sk-lock-btn.prereq-locked {
+  background: linear-gradient(145deg, #ccc, #aaa);
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.12),
+    0 0 0 8px rgba(0,0,0,0.04),
+    0 0 0 16px rgba(0,0,0,0.01);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.sk-lock-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.sk-lock-hint.locked {
+  color: #F7A633;
+  font-weight: 600;
+}
+
+.sk-lock-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.sk-lock-status {
+  font-size: 22px;
+  font-weight: 900;
+  color: #F7A633;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.sk-lock-status.locked {
+  color: #888;
+}
+
+.sk-lock-hint {
+  font-size: 14px;
+  color: #888;
+  margin: 0;
+}
+
+.sk-lock-sub {
+  font-size: 13px;
+  color: #bbb;
+  margin: 0;
+}
+
+/* 기능 버튼 */
+.sk-actions {
+  display: flex;
+  gap: 12px;
+  padding: 0 16px;
+  margin-top: 8px;
+}
+
+.sk-action-btn {
+  flex: 1;
+  background: white;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: transform 0.1s, opacity 0.1s;
+}
+
+.sk-action-btn:active {
+  transform: scale(0.96);
+  opacity: 0.85;
+}
+
+.sk-action-icon {
+  width: 44px;
+  height: 44px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sk-action-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+}
+
+/* 반납 버튼 */
+.sk-return-wrap {
+  padding: 16px 16px 0;
+}
+
+.sk-return-btn {
+  width: 100%;
+  background: white;
+  border: none;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #444;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: opacity 0.1s;
+}
+
+.sk-return-btn:active {
+  opacity: 0.75;
+}
+
+/* ── 예약 시간 전 차단 화면 ────────────────── */
+.sk-blocked-page {
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.sk-blocked-modal {
+  background: white;
+  border-radius: 24px;
+  padding: 36px 28px;
+  margin: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+.sk-blocked-icon {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(145deg, #aaa, #777);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  margin-bottom: 4px;
+}
+
+.sk-blocked-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #111;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.sk-blocked-desc {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.sk-blocked-time {
+  width: 100%;
+  background: #f5f5f7;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.sk-blocked-time-label {
+  font-size: 13px;
+  color: #888;
+}
+
+.sk-blocked-time-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F7A633;
+}
+
+.sk-blocked-btn {
+  width: 100%;
+  background: #F7A633;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 8px;
+  transition: opacity 0.15s;
+}
+
+.sk-blocked-btn:active { opacity: 0.85; }

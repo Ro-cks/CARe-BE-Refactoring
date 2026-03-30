@@ -1,0 +1,141 @@
+* { box-sizing: border-box; }
+
+.did-camera-page {
+  height: 100dvh;
+  background: #2B2B2E;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* -- Top text -- */
+.did-camera-top {
+  padding: 20px 28px 10px;
+  text-align: center;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.did-camera-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+  letter-spacing: -0.4px;
+  line-height: 1.4;
+}
+
+.did-camera-sub {
+  font-size: 17px;
+  font-weight: 700;
+  color: #F7A633;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* -- Camera area -- */
+.did-camera-area {
+  width: 100%;
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.did-camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* -- Guide box (full rounded rectangle) -- */
+.did-camera-guide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  aspect-ratio: 1.585;
+  border: 3px solid #F7A633;
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+/* -- Error -- */
+.did-camera-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: #666;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.did-camera-error button {
+  background: #F7A633;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* -- Shutter button -- */
+.did-camera-footer {
+  padding: 16px 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.did-shutter-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  transition: transform 0.1s;
+}
+
+.did-shutter-btn:active { transform: scale(0.9); }
+.did-shutter-btn:disabled { opacity: 0.4; }
+
+.did-ocr-loading {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 10;
+  color: #fff;
+  font-size: 14px;
+}
+
+.did-ocr-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: #F7A633;
+  border-radius: 50%;
+  animation: ocr-spin 0.8s linear infinite;
+}
+
+@keyframes ocr-spin {
+  to { transform: rotate(360deg); }
+}

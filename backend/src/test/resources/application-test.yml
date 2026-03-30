@@ -1,0 +1,52 @@
+spring:
+  config:
+    import: optional:file:.env
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;NON_KEYWORDS=VALUE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+# JWT: .env의 JWT_SECRET은 Base64가 아니므로 테스트용 값으로 override
+jwt:
+  secret: dGVzdFNlY3JldEtleUZvclRlc3RpbmdQdXJwb3Nlc09ubHkxMjM0
+  access-token-expiration: 900000
+  refresh-token-expiration: 604800000
+
+# AWS S3 / CloudFront (실제 값은 blockchain-local.properties에서 override)
+aws:
+  s3:
+    access-key: ${AWS_ACCESS_KEY_ID:dummy}
+    secret-key: ${AWS_SECRET_ACCESS_KEY:dummy}
+    region: ${AWS_REGION:ap-northeast-2}
+    bucket: ${S3_BUCKET_NAME:}
+  cloudfront:
+    domain: ${CLOUDFRONT_DOMAIN:}
+
+# Pinata IPFS (실제 값은 blockchain-local.properties에서 override)
+pinata:
+  api-key: ${PINATA_API_KEY:}
+  api-secret: ${PINATA_API_SECRET:}
+  jwt: ${PINATA_JWT:}
+
+# Blockchain (실제 값은 blockchain-local.properties에서 override)
+blockchain:
+  rpc-url: ${RPC_URL:https://rpc.ssafy-blockchain.com}
+  private-key: ${PRIVATE_KEY:}
+  chain-id: ${CHAIN_ID:31221}
+  contracts:
+    car-nft: ${CAR_NFT_ADDRESS:}
+    did-registry: ${DID_REGISTRY_ADDRESS:}
+    mock-usdc: ${MOCK_USDC_ADDRESS:}
+    rental: ${RENTAL_CONTRACT_ADDRESS:}

@@ -1,0 +1,114 @@
+/* ════════════════════════════════════════════
+   Disputes List - Dashboard Style (Large Font)
+   ════════════════════════════════════════════ */
+.disp-list-page {
+  flex: 1; width: 100%; height: calc(100vh - 64px);
+  overflow-y: auto; padding: 24px 32px 32px;
+  box-sizing: border-box; background: #faf9f7;
+  display: flex; flex-direction: column; gap: 20px;
+  font-family: -apple-system, sans-serif;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 환영 카드 */
+.disp-welcome-card {
+  border-radius: 20px; padding: 28px 32px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 32px rgba(180, 155, 110, 0.08), 0 1px 0 rgba(255,255,255,0.95) inset;
+  position: relative; overflow: hidden; animation: fadeUp 0.4s both; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.disp-welcome-card::before {
+  content: ''; position: absolute; right: -30px; top: -30px;
+  width: 160px; height: 160px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(208,2,27,0.08) 0%, transparent 70%);
+}
+.disp-title { font-size: 32px; font-weight: 800; color: #2d2d2d; margin: 0 0 8px; letter-spacing: -0.5px; }
+.disp-subtitle { font-size: 16px; color: #7a7a8a; margin: 0; font-weight: 600; }
+
+.disp-welcome-amount { text-align: right; position: relative; z-index: 1; }
+.disp-welcome-amount-label { font-size: 14px; font-weight: 700; color: #9a9aaa; text-transform: uppercase; margin-bottom: 6px; }
+.disp-welcome-amount-value { font-size: 36px; font-weight: 800; color: #D0021B; line-height: 1; }
+.disp-welcome-amount-unit { font-size: 18px; font-weight: 600; color: #b0a898; }
+
+/* KPI 그리드 */
+.disp-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; flex-shrink: 0; }
+.disp-kpi-card {
+  border-radius: 18px; padding: 28px 32px;
+  background: rgba(255,252,248,0.85); backdrop-filter: blur(14px);
+  border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 4px 16px rgba(180,155,110,0.08);
+  display: flex; align-items: center; gap: 20px;
+  animation: fadeUp 0.45s both; border-left: 4px solid var(--ka);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.disp-kpi-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(180,155,110,0.14); }
+.disp-kpi-card[data-delay="0"] { animation-delay: 0.1s; }
+.disp-kpi-card[data-delay="1"] { animation-delay: 0.15s; }
+.disp-kpi-card[data-delay="2"] { animation-delay: 0.2s; }
+.disp-kpi-card[data-delay="3"] { animation-delay: 0.25s; }
+
+.disp-kpi-icon {
+  font-size: 32px; width: 64px; height: 64px; border-radius: 16px;
+  background: color-mix(in srgb, var(--ka) 12%, white);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.disp-kpi-value { font-size: 32px; font-weight: 800; color: #2d2d2d; line-height: 1; margin-bottom: 6px; }
+.disp-kpi-unit { font-size: 18px; font-weight: 600; color: #b0a898; margin-left: 6px; }
+.disp-kpi-label { font-size: 15px; font-weight: 700; color: #9a9aaa; text-transform: uppercase; }
+
+/* 메인 테이블 카드 */
+.disp-content-card {
+  background: rgba(255,255,255,0.8); backdrop-filter: blur(20px);
+  border-radius: 20px; padding: 24px 32px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.04);
+  animation: fadeUp 0.5s 0.3s both; display: flex; flex-direction: column; flex: 1; min-height: 0;
+}
+.disp-tab-filter { display: flex; gap: 12px; margin-bottom: 20px; border-bottom: 2px solid #f0ebe3; padding-bottom: 16px; }
+.disp-tab-button {
+  background: transparent; border: none; font-size: 18px; font-weight: 700;
+  color: #a09a8f; cursor: pointer; padding: 10px 20px; border-radius: 10px; transition: all 0.2s;
+}
+.disp-tab-button:hover { background: #f8f6f2; color: #2d2d2d; }
+.disp-tab-button.active { background: #fff; color: #2d2d2d; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.disp-tab-count { font-size: 16px; color: #b0a898; margin-left: 6px; }
+
+.disp-table-wrapper { flex: 1; overflow-y: auto; }
+.disp-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.disp-table th {
+  padding: 16px 20px; text-align: left; font-size: 15px; font-weight: 700;
+  color: #9a9aaa; border-bottom: 1px solid #ede8e0; text-transform: uppercase;
+}
+.disp-table td { padding: 18px 20px; border-bottom: 1px solid #f5f2ed; font-size: 16px; color: #2d2d2d; vertical-align: middle; }
+.disp-table tr:hover td { background: rgba(255,255,255,0.5); }
+
+/* 유틸리티 텍스트 */
+.font-mono { font-family: 'Courier New', monospace; font-weight: 700; font-size: 15px; }
+.text-primary { color: #4A90E2; }
+.font-bold { font-weight: 700; font-size: 16px; }
+.text-muted { color: #9a9aaa; font-size: 15px; }
+.disp-car-name { font-weight: 800; color: #2d2d2d; font-size: 17px; }
+.disp-car-num { font-size: 14px; color: #9a9aaa; font-weight: 600; margin-top: 4px; }
+.disp-amount { font-size: 18px; font-weight: 800; color: #D0021B; }
+
+/* 뱃지 & 버튼 */
+.disp-issue-badge { display: inline-flex; padding: 6px 12px; border-radius: 8px; font-size: 14px; font-weight: 700; }
+.disp-issue-badge.damage { background: #fce8e8; color: #D0021B; }
+.disp-status-badge { display: inline-flex; padding: 8px 14px; border-radius: 99px; font-size: 14px; font-weight: 700; }
+.disp-status-badge.open { background: #eef2ff; color: #4A90E2; }
+.disp-status-badge.defended { background: #fff4e5; color: #d07000; }
+.disp-status-badge.completed { background: #e8f7ef; color: #1a7a45; }
+
+.disp-btn-detail {
+  padding: 10px 20px; background: #fff; border: 1px solid #ede8e0; border-radius: 10px;
+  font-size: 15px; font-weight: 700; color: #2d2d2d; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+.disp-btn-detail:hover { border-color: #d0c8b8; box-shadow: 0 4px 12px rgba(0,0,0,0.05); transform: translateY(-1px); }
+.disp-empty-state { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+
+@media (max-width: 1024px) { .disp-kpi-grid { grid-template-columns: repeat(2, 1fr); } }

@@ -1,0 +1,188 @@
+* { box-sizing: border-box; }
+
+.did-auth-page {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -- Title -- */
+.did-auth-header {
+  padding: 52px 28px 28px;
+  text-align: center;
+}
+
+.did-auth-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111;
+  line-height: 1.5;
+  margin: 0;
+  letter-spacing: -0.4px;
+}
+
+.did-auth-title .highlight {
+  color: #F7A633;
+}
+
+/* -- Card common -- */
+.did-info-card {
+  margin: 0 20px 14px;
+  border-radius: 20px;
+}
+
+.cream-card {
+  background: #FEF0DC;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.gray-card {
+  background: #EEEEEF;
+  padding: 22px 20px;
+}
+
+/* -- Card 1 text -- */
+.did-info-card-text {
+  font-size: 17px;
+  font-weight: 700;
+  color: #222;
+  line-height: 1.55;
+  margin: 0 0 16px;
+  letter-spacing: -0.3px;
+}
+
+/* -- Cute icon -- */
+.did-smiley { flex-shrink: 0; }
+
+.did-cute-icon {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+/* -- Card 2 -- */
+.did-docs-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  margin: 0 0 14px;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+
+.did-docs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.did-docs-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  border: 1.5px solid transparent;
+  transition: background 0.15s, transform 0.1s, border-color 0.2s;
+}
+
+/* Clickable state */
+.did-docs-item.clickable {
+  cursor: pointer;
+}
+
+.did-docs-item.clickable:active {
+  background: #f5f5f5;
+  transform: scale(0.99);
+}
+
+/* Verified state */
+.did-docs-item.verified {
+  background: #E8F5E9;
+  border-color: #4CAF50;
+}
+
+/* -- Number badge -- */
+.did-docs-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #F7A633;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.did-docs-num.verified-num {
+  background: #4CAF50;
+}
+
+/* -- Doc name -- */
+.did-docs-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: #111;
+  flex: 1;
+  letter-spacing: -0.3px;
+}
+
+/* -- Verified badge -- */
+.verified-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4CAF50;
+  background: rgba(76, 175, 80, 0.12);
+  border-radius: 8px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+/* -- Chevron -- */
+.did-docs-chevron {
+  font-size: 22px;
+  color: #bbb;
+  line-height: 1;
+}
+
+/* -- Bottom button -- */
+.did-auth-footer {
+  margin-top: auto;
+  padding: 24px 20px 44px;
+}
+
+.did-primary-btn {
+  width: 100%;
+  background: #F7A633;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 18px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: -0.3px;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.did-primary-btn:active {
+  background: #e09420;
+  transform: scale(0.99);
+}
+
+.did-primary-btn.done {
+  background: #4CAF50;
+}

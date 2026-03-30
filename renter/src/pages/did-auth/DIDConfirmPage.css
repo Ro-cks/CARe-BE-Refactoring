@@ -1,0 +1,162 @@
+* { box-sizing: border-box; }
+
+.did-confirm-page {
+  min-height: 100vh;
+  background: #F0F0F0;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 40px;
+}
+
+/* -- Header -- */
+.did-confirm-header {
+  padding: 40px 24px 20px;
+}
+
+.did-confirm-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+  line-height: 1.4;
+  letter-spacing: -0.6px;
+}
+
+.did-confirm-highlight {
+  color: #F7A633;
+}
+
+/* -- Image preview -- */
+.did-confirm-preview-wrap {
+  margin: 0 20px 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+
+.did-confirm-preview-img {
+  width: 100%;
+  display: block;
+  height: 180px;
+  object-fit: cover;
+}
+
+.did-confirm-preview-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+}
+
+.did-confirm-preview-placeholder img {
+  width: 200px;
+  object-fit: contain;
+}
+
+/* -- Retake button -- */
+.did-retake-btn {
+  margin: 0 20px 24px;
+  width: calc(100% - 40px);
+  background: #F7A633;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 18px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: -0.3px;
+  transition: background 0.15s;
+}
+
+.did-retake-btn:active { background: #e09420; }
+
+/* -- Input form -- */
+.did-confirm-form {
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.did-input-group {
+  padding: 16px 0;
+  border-bottom: 1.5px solid #DDDDDD;
+}
+
+.did-input-group:first-child {
+  border-top: 1.5px solid #DDDDDD;
+}
+
+.did-input-label {
+  display: block;
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 8px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.did-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 17px;
+  font-weight: 600;
+  color: #111;
+  outline: none;
+  padding: 0;
+  letter-spacing: -0.3px;
+}
+
+.did-input::placeholder {
+  color: #CCC;
+  font-weight: 500;
+}
+
+/* -- Submit button -- */
+.did-confirm-footer {
+  padding: 24px 24px 0;
+}
+
+.did-confirm-primary-btn {
+  width: 100%;
+  background: #F7A633;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 18px;
+  font-size: 17px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: -0.3px;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.did-confirm-primary-btn:active {
+  background: #e09420;
+  transform: scale(0.99);
+}
+
+.did-confirm-error {
+  color: #e53935;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 20px 8px;
+}
+
+.did-confirm-primary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.did-ocr-notice {
+  margin: 0 20px 8px;
+  padding: 10px 14px;
+  background: #FFF8ED;
+  border-left: 3px solid #F7A633;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #7A5500;
+}

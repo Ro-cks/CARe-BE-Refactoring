@@ -1,0 +1,26 @@
+node_modules
+.env
+
+# Manual scripts
+/scripts
+
+# Hardhat files
+/cache
+/artifacts
+
+# TypeChain files
+/typechain
+/typechain-types
+
+# solidity-coverage files
+/coverage
+/coverage.json
+
+# Hardhat Ignition default folder for deployments against a local node
+ignition/deployments/chain-31337
+
+# Ignition build artifacts (주소 파일만 커밋)
+ignition/deployments/**/build-info
+ignition/deployments/**/*.dbg.json
+ignition/deployments/**/journal.jsonl
+ignition/deployments/**/artifacts
