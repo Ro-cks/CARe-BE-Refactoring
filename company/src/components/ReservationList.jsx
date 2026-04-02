@@ -1,8 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import './ReservationList.css'
 
 export default function ReservationList({ reservations }) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const getStatusBadge = (status) => {
     const statusMap = {
@@ -23,11 +25,11 @@ export default function ReservationList({ reservations }) {
       <table className="reservation-table">
         <thead>
           <tr>
-            <th>차량</th>
-            <th>대여자</th>
-            <th>예약일</th>
-            <th>금액</th>
-            <th>상태</th>
+            <th>{t('reservationList.colCar')}</th>
+            <th>{t('reservationList.colRenter')}</th>
+            <th>{t('reservationList.colDate')}</th>
+            <th>{t('reservationList.colAmount')}</th>
+            <th>{t('reservationList.colStatus')}</th>
           </tr>
         </thead>
         <tbody>
@@ -47,7 +49,10 @@ export default function ReservationList({ reservations }) {
               </td>
               <td>
                 <span className={`badge ${getStatusBadge(reservation.status)}`}>
-                  {reservation.status}
+                  {reservation.status === '이용중' ? t('reservationList.statusInUse') :
+                   reservation.status === '예약완료' ? t('reservationList.statusReserved') :
+                   reservation.status === '반납완료' ? t('reservationList.statusReturned') :
+                   reservation.status === '분쟁중' ? t('reservationList.statusDispute') : reservation.status}
                 </span>
               </td>
             </tr>

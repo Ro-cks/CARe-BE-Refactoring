@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useNotification } from '../../context/NotificationContext'
 import { getMyReservations } from '../../api/reservation'
+import { useTranslation } from 'react-i18next'
+import { parseReason } from '../../utils/parseReason'
 import './NotificationsPage.css'
 
 const TYPE_META = {
@@ -26,6 +28,7 @@ function fmtTime(val) {
 
 export default function NotificationsPage() {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { notifications, markAsRead } = useNotification()
   const [reservations, setReservations] = useState([])
 
@@ -96,8 +99,8 @@ export default function NotificationsPage() {
                     </span>
                     <span className="noti-time">{fmtTime(n.createdAt)}</span>
                   </div>
-                  <p className="noti-item-title">{n.title}</p>
-                  <p className="noti-item-message">{n.message}</p>
+                  <p className="noti-item-title">{parseReason(n.title)}</p>
+                  <p className="noti-item-message">{parseReason(n.message)}</p>
                 </div>
                 {isClickable && (
                   <svg className="noti-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none">

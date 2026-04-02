@@ -1,18 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import AuthService from '../services/AuthService'
 import CompanyNotificationService from '../services/CompanyNotificationService'
 import careLogoSrc from '../assets/care-logo.png'
 import './Sidebar.css'
 
-const menuItems = [
-  { id: 'dashboard',    label: '대시보드', icon: '🏠', path: '/dashboard'    },
-  { id: 'cars',         label: '차량 관리',  icon: '🚗', path: '/cars'         },
-  { id: 'reservations', label: '예약 관리', icon: '📅', path: '/reservations' },
-  { id: 'disputes',     label: '분쟁 관리',  icon: '⚖️', path: '/disputes'     },
-]
-
 export default function Sidebar() {
+  const { t, i18n } = useTranslation()
   const location = useLocation()
   const navigate  = useNavigate()
   const [notifications,    setNotifications]    = useState([])
@@ -21,6 +16,18 @@ export default function Sidebar() {
     name:  localStorage.getItem('companyName')  || '',
     email: localStorage.getItem('companyEmail') || '',
   })
+
+  const menuItems = [
+    { id: 'dashboard',    label: t('sidebar.dashboard'),              icon: '🏠', path: '/dashboard'    },
+    { id: 'cars',         label: t('sidebar.carManagement'),          icon: '🚙', path: '/cars'         },
+    { id: 'reservations', label: t('sidebar.reservationManagement'),  icon: '📅', path: '/reservations' },
+    { id: 'disputes',     label: t('sidebar.disputeManagement'),      icon: '⚖️', path: '/disputes'     },
+  ]
+
+  const handleLanguageChange = (lang) => {
+    i18n.changeLanguage(lang)
+    localStorage.setItem('companyLanguage', lang)
+  }
 
   /* localStorage 변경 감지 */
   useEffect(() => {
@@ -50,7 +57,7 @@ export default function Sidebar() {
       const result = await CompanyNotificationService.getNotifications()
       if (!mounted) return
       if (result.success) setNotifications(result.data)
-      else { console.warn('알림 로드 실패:', result.message); setNotifications([]) }
+      else { console.warn('Notification load failed:', result.message); setNotifications([]) }
     }
     load()
 
@@ -62,8 +69,8 @@ export default function Sidebar() {
       token,
       signal: ac.signal,
       onNotification: (n) => setNotifications((prev) => [n, ...prev]),
-      onError: (e)        => console.error('SSE 오류:', e),
-    }).catch((e) => { if (!ac.signal.aborted) console.error('SSE 구독 실패:', e) })
+      onError: (e)        => console.error('SSE error:', e),
+    }).catch((e) => { if (!ac.signal.aborted) console.error('SSE subscribe failed:', e) })
 
     return () => { mounted = false; ac.abort() }
   }, [])
@@ -91,7 +98,7 @@ export default function Sidebar() {
   }
 
   const handleLogout = async () => {
-    if (!window.confirm('로그아웃하시겠습니까?')) return
+    if (!window.confirm(t('sidebar.logoutConfirm'))) return
     await AuthService.logout()
     navigate('/company/login', { replace: true })
   }
@@ -99,17 +106,17 @@ export default function Sidebar() {
   return (
     <header className="sidebar">
 
-      {/* ── 로고 ── */}
+      {/* -- 로고 -- */}
       <div className="sidebar-header">
         <div className="sidebar-header-row">
           <div className="sidebar-logo">
             <img src={careLogoSrc} alt="CARe" className="logo-img" />
-            <span className="logo-badge">업체</span>
+            <span className="logo-badge">{t('sidebar.badge')}</span>
           </div>
         </div>
       </div>
 
-      {/* ── 메뉴 ── */}
+      {/* -- 메뉴 -- */}
       <nav className="sidebar-nav">
         <div className="sidebar-menu">
           {menuItems.map((item) => (
@@ -125,7 +132,35 @@ export default function Sidebar() {
         </div>
       </nav>
 
-      {/* ── 오른쪽 영역 ── */}
+      {/* -- 언어 선택 -- */}
+      <div className="sidebar-lang-switcher" style={{ display: 'flex', gap: '6px', padding: '0 16px', marginTop: '8px' }}>
+        <button
+          type="button"
+          onClick={() => handleLanguageChange('ko')}
+          style={{
+            flex: 1, padding: '6px 0', borderRadius: '6px', border: 'none', cursor: 'pointer',
+            fontSize: '12px', fontWeight: i18n.language === 'ko' ? 700 : 400,
+            background: i18n.language === 'ko' ? '#F5A623' : '#f0ece6',
+            color: i18n.language === 'ko' ? '#fff' : '#6b6b7a',
+          }}
+        >
+          {t('sidebar.languageKo')}
+        </button>
+        <button
+          type="button"
+          onClick={() => handleLanguageChange('ja')}
+          style={{
+            flex: 1, padding: '6px 0', borderRadius: '6px', border: 'none', cursor: 'pointer',
+            fontSize: '12px', fontWeight: i18n.language === 'ja' ? 700 : 400,
+            background: i18n.language === 'ja' ? '#F5A623' : '#f0ece6',
+            color: i18n.language === 'ja' ? '#fff' : '#6b6b7a',
+          }}
+        >
+          {t('sidebar.languageJa')}
+        </button>
+      </div>
+
+      {/* -- 오른쪽 영역 -- */}
       <div className="sidebar-spacer" />
 
       {/* 알림 */}
@@ -134,9 +169,9 @@ export default function Sidebar() {
           type="button"
           className="sidebar-notification-btn"
           onClick={() => setNotificationOpen((v) => !v)}
-          aria-label="알림"
+          aria-label={t('sidebar.notifications')}
         >
-          🔔 알림
+          🔔 {t('sidebar.notifications')}
           {unreadCount > 0 && (
             <span className="sidebar-notification-badge">{unreadCount}</span>
           )}
@@ -144,10 +179,10 @@ export default function Sidebar() {
 
         {notificationOpen && (
           <div className="sidebar-notification-panel">
-            <div className="sidebar-notification-title">실시간 알림</div>
+            <div className="sidebar-notification-title">{t('sidebar.notificationTitle')}</div>
             <div className="sidebar-notification-list">
               {notifications.length === 0 ? (
-                <div className="sidebar-notification-empty">새 알림이 없습니다.</div>
+                <div className="sidebar-notification-empty">{t('sidebar.notificationEmpty')}</div>
               ) : (
                 notifications.slice(0, 10).map((n) => (
                   <button
@@ -170,7 +205,7 @@ export default function Sidebar() {
       <div className="sidebar-bottom">
         <div className="sidebar-company-info">
           <div className="sidebar-company-top">
-            <div className="company-name">{company.name || '회사명 없음'}</div>
+            <div className="company-name">{company.name || t('sidebar.noCompanyName')}</div>
             <div className="company-email">{company.email || ''}</div>
           </div>
         </div>
@@ -179,7 +214,7 @@ export default function Sidebar() {
           className="sidebar-inline-logout-btn"
           onClick={handleLogout}
         >
-          로그아웃
+          {t('sidebar.logout')}
         </button>
       </div>
 

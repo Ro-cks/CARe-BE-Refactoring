@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import AuthService from '../../services/AuthService'
 import './LoginPage.css'
 
 export default function LoginPage() {
+  const { t } = useTranslation()
   const location = useLocation()
   const navigate = useNavigate()
   const from = location.state?.from?.pathname || '/dashboard'
@@ -35,11 +37,11 @@ export default function LoginPage() {
       if (result.success) {
         navigate(from, { replace: true })
       } else {
-        setError(result.message || '로그인에 실패했습니다.')
+        setError(result.message || t('login.errorFailed'))
       }
     } catch (err) {
-      console.error('로그인 예외:', err)
-      setError('서버 연결에 실패했습니다. 네트워크 상태를 확인해주세요.')
+      console.error('Login error:', err)
+      setError(t('login.errorNetwork'))
     } finally {
       setLoading(false)
     }
@@ -53,15 +55,15 @@ export default function LoginPage() {
 
       <div className="login-form-section">
         <div className="login-form-wrapper">
-          <h1 className="login-title">환영합니다</h1>
+          <h1 className="login-title">{t('login.welcome')}</h1>
           <p className="login-subtitle">
-            No.1 글로벌 렌터카 서비스 CARe입니다.
-            고객에게 투명하고 신뢰성 높은 렌터카를 제공해보세요.
+            {t('login.subtitle1')}
+            {t('login.subtitle2')}
           </p>
 
           <form onSubmit={handleSubmit} className="login-form">
             <div className="form-group">
-              <label htmlFor="email">Email Id</label>
+              <label htmlFor="email">{t('login.emailLabel')}</label>
               <div className="input-wrapper">
                 <input
                   type="email"
@@ -76,7 +78,7 @@ export default function LoginPage() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t('login.passwordLabel')}</label>
               <div className="input-wrapper">
                 <input
                   type="password"
@@ -91,22 +93,22 @@ export default function LoginPage() {
             </div>
 
             <div className="form-footer">
-              <a href="#" className="forgot-password">비밀번호를 잊으셨나요?</a>
+              <a href="#" className="forgot-password">{t('login.forgotPassword')}</a>
             </div>
 
             {error && <div className="error-message">{error}</div>}
 
             <button type="submit" className="login-button" disabled={loading}>
-              {loading ? '로그인 중...' : 'LOGIN'}
+              {loading ? t('login.loginLoading') : t('login.loginButton')}
             </button>
           </form>
 
           <p className="register-link">
-            회원이 아니신가요? <Link to="/register">회원가입</Link>
+            {t('login.noAccount')} <Link to="/register">{t('login.signupLink')}</Link>
           </p>
 
           <p className="copyright">
-            ©CARe 2026 ALL RIGHTS RESERVED
+            {t('login.copyright')}
           </p>
         </div>
       </div>

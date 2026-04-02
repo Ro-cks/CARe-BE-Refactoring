@@ -91,6 +91,18 @@ public class DisputeService {
 		return DisputeCreateResponse.from(saved);
 	}
 
+	@Transactional
+	public void resetDisputeToOpen(String disputeId) {
+		Dispute dispute = disputeRepository.findByDisputeId(disputeId)
+				.orElseThrow(() -> new IllegalArgumentException("분쟁을 찾을 수 없습니다: " + disputeId));
+
+		Reservation reservation = dispute.getReservation();
+
+		dispute.resetToOpen();
+		dispute.getTargetScratch().markDisputed();
+		reservation.lockDeposit();
+	}
+
 	private void captureReturnReportSnapshot(Dispute dispute, String reservationId, Scratch targetScratch) {
 		List<Scratch> beforeScratches = scratchRepository.findByReservation_ReservationIdAndLogType(reservationId, "BEFORE")
 				.stream()
@@ -290,7 +302,7 @@ public class DisputeService {
 		Scratch defenseScratch = scratchRepository.findById(request.getDefenseLogId())
 				.orElseThrow(() -> new IllegalArgumentException("방어 흠집 로그를 찾을 수 없습니다: " + request.getDefenseLogId()));
 
-		validateScratchBelongsToReservation(defenseScratch, reservationId);
+		validateScratchBelongsToCar(defenseScratch, dispute.getReservation().getOwnedCar().getCarId());
 
 		dispute.defend(defenseScratch);
 		companyNotificationService.createDefenseSubmittedNotification(
@@ -327,6 +339,13 @@ public class DisputeService {
 		String scratchReservationId = scratch.getReservation().getReservationId();
 		if (!reservationId.equals(scratchReservationId)) {
 			throw new IllegalArgumentException("해당 예약의 흠집 로그가 아닙니다.");
+		}
+	}
+
+	private void validateScratchBelongsToCar(Scratch scratch, String carId) {
+		String scratchCarId = scratch.getOwnedCar().getCarId();
+		if (!carId.equals(scratchCarId)) {
+			throw new IllegalArgumentException("해당 차량의 흠집 로그가 아닙니다.");
 		}
 	}
 

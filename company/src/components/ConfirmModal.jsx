@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import './ConfirmModal.css'
 
 export default function ConfirmModal({
@@ -7,10 +8,15 @@ export default function ConfirmModal({
   onConfirm,
   title,
   message,
-  confirmText = '요청하기',
-  cancelText = '취소하기',
+  confirmText,
+  cancelText,
   confirmButtonStyle = 'danger' // 'danger' | 'primary'
 }) {
+  const { t } = useTranslation()
+
+  const resolvedConfirmText = confirmText || t('confirmModal.defaultConfirm')
+  const resolvedCancelText = cancelText || t('confirmModal.defaultCancel')
+
   // ESC 키로 모달 닫기
   useEffect(() => {
     const handleEscape = (e) => {
@@ -21,7 +27,6 @@ export default function ConfirmModal({
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
-      // 모달이 열리면 body 스크롤 방지
       document.body.style.overflow = 'hidden'
     }
 
@@ -47,8 +52,8 @@ export default function ConfirmModal({
   return (
     <div className="confirm-modal-backdrop" onClick={handleBackdropClick}>
       <div className="confirm-modal-container">
-        <button className="confirm-modal-close" onClick={onClose} aria-label="닫기">
-          ×
+        <button className="confirm-modal-close" onClick={onClose} aria-label={t('confirmModal.closeLabel')}>
+          {'\u00d7'}
         </button>
 
         <div className="confirm-modal-content">
@@ -72,13 +77,13 @@ export default function ConfirmModal({
               className="confirm-modal-button cancel"
               onClick={onClose}
             >
-              {cancelText}
+              {resolvedCancelText}
             </button>
             <button
               className={`confirm-modal-button confirm ${confirmButtonStyle}`}
               onClick={handleConfirm}
             >
-              {confirmText}
+              {resolvedConfirmText}
             </button>
           </div>
         </div>

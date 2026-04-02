@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useNotification } from '../context/NotificationContext'
+import { parseReason } from '../utils/parseReason'
 import './NotificationToast.css'
 
 export default function NotificationToast() {
@@ -22,8 +23,8 @@ export default function NotificationToast() {
 
   return (
     <div className="notification-toast" onClick={handleClick}>
-      <div className="notification-toast-title">🔔 {toast.title}</div>
-      <div className="notification-toast-message">{toast.message}</div>
+      <div className="notification-toast-title">🔔 {parseReason(toast.title)}</div>
+      <div className="notification-toast-message">{parseReason(toast.message)}</div>
       <button
         className="notification-toast-close"
         onClick={(e) => { e.stopPropagation(); dismissToast() }}

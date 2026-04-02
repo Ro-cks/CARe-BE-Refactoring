@@ -148,6 +148,48 @@
   color: white;
 }
 
+/* ─── 정렬 버튼 ─── */
+.dh-sort-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: white;
+  border: 1.5px solid #eee;
+  border-radius: 20px;
+  padding: 6.5px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #444;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 8px;
+}
+
+.dh-sort-toggle:active {
+  transform: scale(0.96);
+  background: #f9f9f9;
+}
+
+.dh-sort-toggle svg {
+  color: #888;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s;
+}
+
+.dh-sort-toggle.asc svg {
+  transform: rotate(-180deg);
+}
+
+.dh-sort-toggle:hover {
+  border-color: #ccc;
+  color: #111;
+}
+.dh-sort-toggle:hover svg {
+  color: #111;
+}
+
 /* ─── 빈 상태 ─────────────────────────────────── */
 .dh-empty {
   text-align: center;

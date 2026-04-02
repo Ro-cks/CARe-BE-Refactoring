@@ -177,5 +177,9 @@
     "error": "错误",
     "chargeLabel": "充值",
     "paymentLabel": "付款"
+  },
+  "dispute": {
+    "reasonNewScratch": "检测到新划痕",
+    "reasonLowSimilarity": "与原始图像相似度相差{{percent}}%"
   }
 }

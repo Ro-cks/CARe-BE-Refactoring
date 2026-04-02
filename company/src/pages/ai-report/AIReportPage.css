@@ -586,15 +586,20 @@
 }
 
 .dispute-create-title {
-  margin: 0 0 6px 0;
-  font-size: 13px;
-  font-weight: 700;
-  color: #2f3640;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #212529;
+  border-bottom: 2px solid #f1f3f5;
+  padding-bottom: 10px;
 }
 
 .dispute-create-meta {
   margin: 0 0 8px 0;
-  font-size: 12px;
+  font-size: 13px;
   color: #6c757d;
 }
 
@@ -602,9 +607,106 @@
   width: 100%;
   border: 1px solid #d6dbe1;
   border-radius: 6px;
-  padding: 10px;
-  font-size: 13px;
+  padding: 12px 14px;
+  font-size: 14px;
   margin-bottom: 8px;
+}
+
+.deposit-highlight {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e8f0fe;
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #d2e3fc;
+}
+
+.deposit-highlight .deposit-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1967d2;
+}
+
+.deposit-highlight .deposit-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: #174ea6;
+}
+
+.amount-input-group {
+  margin-top: 16px;
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.amount-label {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #495057;
+  margin-bottom: 10px;
+}
+
+.amount-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.amount-input {
+  margin-bottom: 0 !important;
+  padding-right: 60px !important;
+  font-size: 18px !important;
+  font-weight: 700;
+  color: #212529;
+  text-align: right;
+}
+
+.amount-unit {
+  position: absolute;
+  right: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #adb5bd;
+}
+
+.amount-helper {
+  margin: 8px 0 0 0;
+  font-size: 13px;
+  color: #868e96;
+}
+
+.reason-toggle-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.reason-toggle-btn {
+  padding: 10px 14px;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reason-toggle-btn:hover {
+  background-color: #e9ecef;
+}
+
+.reason-toggle-btn.active {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
 }
 
 .dispute-reason {

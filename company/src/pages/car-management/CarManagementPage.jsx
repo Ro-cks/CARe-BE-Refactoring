@@ -1,22 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import CarService from '../../services/CarService'
 import './CarManagementPage.css'
 
-/* ── 매핑 ── */
-const STATUS_META = {
-  ACTIVE:      { label: '대여가능', cls: 'available',   dot: '#1a7a45' },
-  RENTED:      { label: '대여중',   cls: 'rented',      dot: '#3d4ecf' },
-  MAINTENANCE: { label: '정비중',   cls: 'maintenance', dot: '#b45309' },
-  INACTIVE:    { label: '대여불가', cls: 'inactive',     dot: '#52525e' },
-}
-const FUEL_MAP = {
-  GASOLINE: '가솔린', DIESEL: '디젤', ELECTRIC: '전기', HYBRID: '하이브리드',
-}
 const CAT_MAP = {
   ACTIVE: 'available', RENTED: 'rented', MAINTENANCE: 'maintenance', INACTIVE: 'inactive',
 }
-const CAR_ICONS = ['🚗','🚙','🚕','🏎️','🚐']
+const CAR_ICONS = ['\ud83d\ude97','\ud83d\ude99','\ud83d\ude95','\ud83c\udfce\ufe0f','\ud83d\ude90']
 
 /* API 실패 또는 데이터 없을 때 사용하는 폴백 */
 const MOCK_CARS = [
@@ -27,7 +18,7 @@ const MOCK_CARS = [
   { carId: 5, brand: '테슬라',modelName: 'Model3',fuelType: 'ELECTRIC', status: 'ACTIVE',      dailyPrice: 130000, reservationCount: 15 },
 ]
 
-/* ── 스켈레톤 로딩 ── */
+/* 스켈레톤 로딩 */
 function SkeletonRows() {
   return Array.from({ length: 4 }).map((_, i) => (
     <tr key={i} className="skeleton-row">
@@ -42,10 +33,24 @@ function SkeletonRows() {
 }
 
 export default function CarManagementPage() {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('all')
   const [cars, setCars] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
+
+  const STATUS_META = {
+    ACTIVE:      { label: t('carManagement.statusAvailable'),   cls: 'available',   dot: '#1a7a45' },
+    RENTED:      { label: t('carManagement.statusRented'),      cls: 'rented',      dot: '#3d4ecf' },
+    MAINTENANCE: { label: t('carManagement.statusMaintenance'), cls: 'maintenance', dot: '#b45309' },
+    INACTIVE:    { label: t('carManagement.statusInactive'),    cls: 'inactive',     dot: '#52525e' },
+  }
+  const FUEL_MAP = {
+    GASOLINE: t('carManagement.fuelGasoline'),
+    DIESEL:   t('carManagement.fuelDiesel'),
+    ELECTRIC: t('carManagement.fuelElectric'),
+    HYBRID:   t('carManagement.fuelHybrid'),
+  }
 
   useEffect(() => {
     const load = async () => {
@@ -71,10 +76,10 @@ export default function CarManagementPage() {
   }
 
   const chips = [
-    { id: 'all',         label: '전체',    count: counts.all,         dot: '#F5A623' },
-    { id: 'available',   label: '대여가능', count: counts.available,   dot: '#1a7a45' },
-    { id: 'rented',      label: '대여중',   count: counts.rented,      dot: '#3d4ecf' },
-    { id: 'maintenance', label: '정비중',   count: counts.maintenance, dot: '#b45309' },
+    { id: 'all',         label: t('carManagement.tabAll'),         count: counts.all,         dot: '#F5A623' },
+    { id: 'available',   label: t('carManagement.tabAvailable'),   count: counts.available,   dot: '#1a7a45' },
+    { id: 'rented',      label: t('carManagement.tabRented'),      count: counts.rented,      dot: '#3d4ecf' },
+    { id: 'maintenance', label: t('carManagement.tabMaintenance'), count: counts.maintenance, dot: '#b45309' },
   ]
 
   const filtered = activeTab === 'all'
@@ -86,18 +91,18 @@ export default function CarManagementPage() {
   return (
     <div className="car-management-page">
 
-      {/* ── 헤더 ── */}
+      {/* 헤더 */}
       <div className="page-header-with-button">
         <div>
-          <h1 className="page-title">차량 관리</h1>
-          <p className="page-subtitle">등록된 차량을 관리하고 새 차량을 등록하세요</p>
+          <h1 className="page-title">{t('carManagement.title')}</h1>
+          <p className="page-subtitle">{t('carManagement.subtitle')}</p>
         </div>
         <button className="btn-register" onClick={() => navigate('/cars/register')}>
-          + 차량 등록
+          {t('carManagement.registerBtn')}
         </button>
       </div>
 
-      {/* ── 요약 칩 ── */}
+      {/* 요약 칩 */}
       <div className="car-summary-bar">
         {chips.map(chip => (
           <button
@@ -115,16 +120,16 @@ export default function CarManagementPage() {
         ))}
       </div>
 
-      {/* ── 테이블 ── */}
+      {/* 테이블 */}
       <div className="car-table-container">
         <table className="car-table">
           <thead>
             <tr>
-              <th>차량</th>
-              <th>연료</th>
-              <th>일일 대여료</th>
-              <th>예약 수</th>
-              <th>상태</th>
+              <th>{t('carManagement.colCar')}</th>
+              <th>{t('carManagement.colFuel')}</th>
+              <th>{t('carManagement.colDailyPrice')}</th>
+              <th>{t('carManagement.colReservations')}</th>
+              <th>{t('carManagement.colStatus')}</th>
               <th />
             </tr>
           </thead>
@@ -135,9 +140,9 @@ export default function CarManagementPage() {
               <tr>
                 <td colSpan={6}>
                   <div className="car-empty">
-                    <div className="car-empty-icon">🚗</div>
-                    <div className="car-empty-text">해당 조건의 차량이 없습니다</div>
-                    <div className="car-empty-sub">다른 필터를 선택해보세요</div>
+                    <div className="car-empty-icon">{'\ud83d\ude97'}</div>
+                    <div className="car-empty-text">{t('carManagement.emptyTitle')}</div>
+                    <div className="car-empty-sub">{t('carManagement.emptySub')}</div>
                   </div>
                 </td>
               </tr>
@@ -177,7 +182,7 @@ export default function CarManagementPage() {
                       <button
                         className="menu-button"
                         onClick={e => { e.stopPropagation() }}
-                      >⋮</button>
+                      >{'\u22ee'}</button>
                     </td>
                   </tr>
                 )

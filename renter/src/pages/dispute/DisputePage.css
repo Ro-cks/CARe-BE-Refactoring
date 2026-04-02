@@ -266,6 +266,24 @@
   gap: 6px;
 }
 
+.dp-img-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px; /* space between full and crop images */
+}
+
+.dp-img-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  color: #888;
+}
+
+.dp-compare-stack {
+  display: flex;
+  flex-direction: column;
+}
+
 .dp-compare-img {
   background: #f5f5f7;
   border-radius: 12px;

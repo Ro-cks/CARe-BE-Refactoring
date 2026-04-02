@@ -339,6 +339,11 @@
     "backToList": "予約一覧へ"
   },
   "dispute": {
+    "presetNewScratch": "新しい傷",
+    "presetLowSimilarity": "類似度の違い ({{percent}}%)",
+    "presetDirect": "直接入力",
+    "reasonNewScratch": "新しい傷を検知",
+    "reasonLowSimilarity": "既存画像との類似度が{{percent}}%異なります",
     "title": "紛争詳細",
     "statusOpen": "紛争申請済み",
     "statusPending": "処理中",

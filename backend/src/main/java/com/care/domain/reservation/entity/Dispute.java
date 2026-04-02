@@ -210,6 +210,19 @@ public class Dispute extends BaseEntity {
         return this.companySettlementAgreed && this.renterSettlementAgreed;
     }
 
+    public void clearDefenseScratch() {
+        this.defenseScratch = null;
+    }
+
+    public void resetToOpen() {
+        this.status = DisputeStatus.OPEN.name();
+        this.settlementFinalAmount = null;
+        this.settlementStatus = null;
+        this.companySettlementAgreed = false;
+        this.renterSettlementAgreed = false;
+        this.settlementAgreedAt = null;
+    }
+
     private void assertStatus(DisputeStatus expected) {
         DisputeStatus current = getStatusEnum();
         if (current != expected) {

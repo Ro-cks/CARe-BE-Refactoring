@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import careLogo from '../../assets/care_logo.png'
 import { getDisputeDetail, settleDispute } from '../../api/reservation'
+import { parseReason } from '../../utils/parseReason'
 import './DisputePage.css'
 
 const LOCATION_LABELS = {
@@ -144,7 +145,7 @@ export default function DisputePage() {
             {dispute?.reason && (
               <div className="dp-settled-row">
                 <span className="dp-settled-label">분쟁 사유</span>
-                <span className="dp-settled-val">{dispute.reason}</span>
+                <span className="dp-settled-val">{parseReason(dispute.reason)}</span>
               </div>
             )}
           </div>
@@ -185,34 +186,85 @@ export default function DisputePage() {
       </header>
 
       <div className="dp-scroll">
-        {/* ① 이미지 섹션 — 최상단 */}
+        {/* ② 상태 배너 (상단 이동) */}
+        {isNoFaultOffered ? (
+          <div className="dp-nofault-banner" style={{ marginBottom: 16 }}>
+            <div className="dp-nofault-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.25)"/>
+                <path d="M7 12.5l3.5 3.5 6.5-7" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div className="dp-banner-text">
+              <p className="dp-banner-title">업체에서 무과실을 인정했습니다</p>
+              <p className="dp-banner-sub">아래 정산 동의 버튼으로 확인해주세요</p>
+            </div>
+          </div>
+        ) : (!dispute || dispute.status === 'OPEN') && (
+          <button className="dp-dispute-banner" onClick={handleDispute} style={{ marginBottom: 16 }}>
+            <div className="dp-banner-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                <path d="M12 9v4M12 17h.01" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
+                <path d="M12 2L2 20h20L12 2z" stroke="white" strokeWidth="2" strokeLinejoin="round"/>
+              </svg>
+            </div>
+            <div className="dp-banner-text">
+              <p className="dp-banner-title">{t('dispute.bannerTitle', '분쟁이 발생했어요')}</p>
+              <p className="dp-banner-sub">{t('dispute.bannerSub', '새로운 흠집이 감지되었습니다')}</p>
+            </div>
+          </button>
+        )}
+
+        {/* ① 이미지 섹션 */}
         <div className="dp-section">
           {dispute?.snapshotBeforeCropS3Url ? (
             <>
               <p className="dp-section-title">사진 비교</p>
               <div className="dp-compare-row">
                 <div className="dp-compare-card">
-                  <div className="dp-compare-img before">
-                    <img src={dispute.snapshotBeforeCropS3Url} alt="픽업 전" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8 }} />
+                  {dispute?.snapshotBeforeOriginalS3Url && (
+                    <div className="dp-img-wrap">
+                      <span className="dp-img-lbl">{t('dispute.fullPhoto', '전체 사진')}</span>
+                      <div className="dp-compare-img before">
+                        <img src={dispute.snapshotBeforeOriginalS3Url} alt="픽업 전 전체" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8 }} />
+                      </div>
+                    </div>
+                  )}
+                  <div className="dp-img-wrap">
+                    <span className="dp-img-lbl">{t('dispute.closeUp', '클로즈업')}</span>
+                    <div className="dp-compare-img before">
+                      <img src={dispute.snapshotBeforeCropS3Url} alt="픽업 전" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8 }} />
+                    </div>
                   </div>
-                  <p className="dp-compare-label">픽업 전</p>
+                  <p className="dp-compare-label mt-1">픽업 전</p>
                   {dispute?.snapshotCapturedAt && (
                     <p className="dp-compare-date">{formatDateTime(dispute.snapshotCapturedAt)}</p>
                   )}
                   <span className="dp-compare-tag normal">픽업 전 상태</span>
                 </div>
                 <div className="dp-compare-card">
-                  <div className="dp-compare-img after">
-                    {dispute?.snapshotAfterCropS3Url
-                      ? <img src={dispute.snapshotAfterCropS3Url} alt="반납 후" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8 }} />
-                      : <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
-                          <rect x="3" y="5" width="18" height="14" rx="2" stroke="#ccc" strokeWidth="1.5"/>
-                          <circle cx="12" cy="12" r="3" stroke="#ccc" strokeWidth="1.5"/>
-                          <circle cx="17.5" cy="7.5" r="1" fill="#ccc"/>
-                        </svg>
-                    }
+                  {dispute?.snapshotAfterOriginalS3Url && (
+                    <div className="dp-img-wrap">
+                      <span className="dp-img-lbl">{t('dispute.fullPhoto', '전체 사진')}</span>
+                      <div className="dp-compare-img after">
+                        <img src={dispute.snapshotAfterOriginalS3Url} alt="반납 후 전체" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8 }} />
+                      </div>
+                    </div>
+                  )}
+                  <div className="dp-img-wrap">
+                    <span className="dp-img-lbl">{t('dispute.closeUp', '클로즈업')}</span>
+                    <div className="dp-compare-img after">
+                      {dispute?.snapshotAfterCropS3Url
+                        ? <img src={dispute.snapshotAfterCropS3Url} alt="반납 후" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 8 }} />
+                        : <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="5" width="18" height="14" rx="2" stroke="#ccc" strokeWidth="1.5"/>
+                            <circle cx="12" cy="12" r="3" stroke="#ccc" strokeWidth="1.5"/>
+                            <circle cx="17.5" cy="7.5" r="1" fill="#ccc"/>
+                          </svg>
+                      }
+                    </div>
                   </div>
-                  <p className="dp-compare-label">반납 후</p>
+                  <p className="dp-compare-label mt-1">반납 후</p>
                   {dispute?.createdAt && (
                     <p className="dp-compare-date">{formatDateTime(dispute.createdAt)}</p>
                   )}
@@ -225,8 +277,21 @@ export default function DisputePage() {
           ) : dispute?.snapshotAfterCropS3Url ? (
             <>
               <p className="dp-section-title">새 흠집 감지</p>
-              <div className="dp-compare-img after" style={{ width: '100%', borderRadius: 12, overflow: 'hidden', aspectRatio: '4/3' }}>
-                <img src={dispute.snapshotAfterCropS3Url} alt="반납 후" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div className="dp-compare-stack">
+                {dispute?.snapshotAfterOriginalS3Url && (
+                  <div className="dp-img-wrap">
+                    <span className="dp-img-lbl">{t('dispute.fullPhoto', '전체 사진')}</span>
+                    <div className="dp-compare-img after" style={{ width: '100%', borderRadius: 12, overflow: 'hidden', aspectRatio: '4/3' }}>
+                      <img src={dispute.snapshotAfterOriginalS3Url} alt="반납 후 전체" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  </div>
+                )}
+                <div className="dp-img-wrap">
+                  <span className="dp-img-lbl">{t('dispute.closeUp', '클로즈업')}</span>
+                  <div className="dp-compare-img after" style={{ width: '100%', borderRadius: 12, overflow: 'hidden', aspectRatio: '4/3' }}>
+                    <img src={dispute.snapshotAfterCropS3Url} alt="반납 후" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                </div>
               </div>
             </>
           ) : null}
@@ -244,35 +309,6 @@ export default function DisputePage() {
             </div>
           )}
         </div>
-
-        {/* ② 상태 배너 */}
-        {isNoFaultOffered ? (
-          <div className="dp-nofault-banner">
-            <div className="dp-nofault-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.25)"/>
-                <path d="M7 12.5l3.5 3.5 6.5-7" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div className="dp-banner-text">
-              <p className="dp-banner-title">업체에서 무과실을 인정했습니다</p>
-              <p className="dp-banner-sub">아래 정산 동의 버튼으로 확인해주세요</p>
-            </div>
-          </div>
-        ) : (!dispute || dispute.status === 'OPEN') && (
-          <button className="dp-dispute-banner" onClick={handleDispute}>
-            <div className="dp-banner-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <path d="M12 9v4M12 17h.01" stroke="white" strokeWidth="2.2" strokeLinecap="round"/>
-                <path d="M12 2L2 20h20L12 2z" stroke="white" strokeWidth="2" strokeLinejoin="round"/>
-              </svg>
-            </div>
-            <div className="dp-banner-text">
-              <p className="dp-banner-title">{t('dispute.bannerTitle')}</p>
-              <p className="dp-banner-sub">{t('dispute.bannerSub')}</p>
-            </div>
-          </button>
-        )}
 
         {/* ③ 로딩 / 에러 */}
         {loading && (
@@ -304,7 +340,7 @@ export default function DisputePage() {
               {dispute.reason && (
                 <div className="dp-info-row">
                   <span className="dp-info-label">{t('dispute.reason')}</span>
-                  <span className="dp-info-value">{dispute.reason}</span>
+                  <span className="dp-info-value">{parseReason(dispute.reason)}</span>
                 </div>
               )}
               {dispute.claimAmount != null && (

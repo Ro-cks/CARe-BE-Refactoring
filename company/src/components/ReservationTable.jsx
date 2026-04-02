@@ -1,22 +1,23 @@
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { shortId } from '../utils/formatId'
 import './ReservationTable.css'
 
-/* 상태 문자열 → badge 클래스명 + 표시 텍스트 */
-const STATUS_MAP = {
-  '이용중':   { cls: 'ongoing',   label: '이용중'   },
-  '반납대기': { cls: 'waiting',   label: '반납대기' },
-  '반납완료': { cls: 'completed', label: '반납완료' },
-  '예약완료': { cls: 'reserved',  label: '예약완료' },
-  '분쟁중':   { cls: 'dispute',   label: '분쟁중'   },
+const RAW_STATUS_MAP = {
+  IN_USE: 'ongoing',
+  AFTER_SCAN: 'waiting',
+  COMPLETED: 'completed',
+  RESERVED: 'reserved',
+  DISPUTE: 'dispute'
 }
 
-function StatusBadge({ status }) {
-  const { cls, label } = STATUS_MAP[status] ?? { cls: 'reserved', label: status }
+function StatusBadge({ rawStatus, label }) {
+  const cls = RAW_STATUS_MAP[rawStatus] ?? 'reserved'
   return <span className={`res-status-badge ${cls}`}>{label}</span>
 }
 
 export default function ReservationTable({ reservations = [], sortOrder = 'desc', onSortToggle }) {
+  const { t } = useTranslation()
   const navigate = useNavigate()
 
   /* 빈 상태 */
@@ -24,8 +25,8 @@ export default function ReservationTable({ reservations = [], sortOrder = 'desc'
     return (
       <div className="res-empty">
         <div className="res-empty-icon">📋</div>
-        <p className="res-empty-text">예약 내역이 없습니다.</p>
-        <p className="res-empty-sub">해당 카테고리에 예약이 존재하지 않아요.</p>
+        <p className="res-empty-text">{t('reservationTable.emptyTitle')}</p>
+        <p className="res-empty-sub">{t('reservationTable.emptySub')}</p>
       </div>
     )
   }
@@ -34,14 +35,14 @@ export default function ReservationTable({ reservations = [], sortOrder = 'desc'
     <table className="res-table">
       <thead>
         <tr>
-          <th>예약번호</th>
-          <th>차량</th>
-          <th>임차인</th>
+          <th>{t('reservationTable.colReservationNo')}</th>
+          <th>{t('reservationTable.colCar')}</th>
+          <th>{t('reservationTable.colRenter')}</th>
           <th className="res-th-sortable" onClick={onSortToggle}>
-              대여 기간 {sortOrder === 'desc' ? '↓' : '↑'}
+              {t('reservationTable.colPeriod')} {sortOrder === 'desc' ? '↓' : '↑'}
             </th>
-          <th>금액</th>
-          <th>상태</th>
+          <th>{t('reservationTable.colAmount')}</th>
+          <th>{t('reservationTable.colStatus')}</th>
         </tr>
       </thead>
       <tbody>
@@ -89,9 +90,9 @@ export default function ReservationTable({ reservations = [], sortOrder = 'desc'
 
             {/* 상태 */}
             <td>
-              <StatusBadge status={r.status} />
+              <StatusBadge rawStatus={r.rawStatus || r.status} label={r.status} />
               {r.disputeStatus === 'COMPLETED' && (
-                <span className="res-status-badge dispute-done" style={{ marginTop: 4, display: 'block' }}>분쟁완료</span>
+                <span className="res-status-badge dispute-done" style={{ marginTop: 4, display: 'block' }}>{t('reservationTable.statusDisputeDone')}</span>
               )}
             </td>
 

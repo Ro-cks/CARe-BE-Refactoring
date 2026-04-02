@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import CompanyService from '../../services/CompanyService'
 import './DashboardPage.css'
 
@@ -110,7 +111,8 @@ function SplineChart({ data }) {
 }
 
 export default function DashboardPage() {
-  const [chartPeriod, setChartPeriod] = useState('월별')
+  const { t } = useTranslation()
+  const [chartPeriod, setChartPeriod] = useState('monthly')
   const [companyName, setCompanyName] = useState('')
 
   useEffect(() => {
@@ -118,37 +120,40 @@ export default function DashboardPage() {
       if (result.success && result.data?.name) {
         setCompanyName(result.data.name)
       } else {
-        setCompanyName(localStorage.getItem('companyName') || '업체')
+        setCompanyName(localStorage.getItem('companyName') || '')
       }
     })
   }, [])
 
-  /* KPI 폴백 데이터 (운영 차량 수, 정산 대기, 예약 건수, 분쟁 건수 API 없음) */
   const rightCards = [
-    { label: '운영 차량',   value: '8대',         sub: '가동률 80%',      icon: '🚗', accent: '#F5A623' },
-    { label: '정산 대기',   value: '850,000 CARE', sub: '3건 처리 대기',   icon: '⏳', accent: '#fb923c' },
-    { label: '이번 달 예약', value: '45건',         sub: '지난달 대비 +12%', icon: '📅', accent: '#818cf8' },
-    { label: '분쟁 건수',   value: '1건',          sub: '처리 필요',       icon: '⚖️', accent: '#ef4444' },
+    { label: t('dashboard.kpiCars'),        value: '8',          sub: t('dashboard.kpiCarsSub'),        icon: '\ud83d\ude97', accent: '#F5A623' },
+    { label: t('dashboard.kpiSettlement'),   value: '850,000 CARE', sub: t('dashboard.kpiSettlementSub'),  icon: '\u23f3', accent: '#fb923c' },
+    { label: t('dashboard.kpiReservation'),  value: '45',         sub: t('dashboard.kpiReservationSub'),  icon: '\ud83d\udcc5', accent: '#818cf8' },
+    { label: t('dashboard.kpiDispute'),      value: '1',          sub: t('dashboard.kpiDisputeSub'),      icon: '\u2696\ufe0f', accent: '#ef4444' },
+  ]
+
+  const periodOptions = [
+    { id: 'monthly',   label: t('dashboard.periodMonthly') },
+    { id: 'quarterly', label: t('dashboard.periodQuarterly') },
   ]
 
   return (
     <div className="dashboard-page">
 
-      {/* 1. 환영 배너 (가로 전체 차지) */}
+      {/* 1. 환영 배너 */}
       <div className="dash-welcome-card">
         <div className="dash-welcome-text">
-          <p className="dash-welcome-sub">안녕하세요 👋</p>
+          <p className="dash-welcome-sub">{t('dashboard.greeting')}</p>
           <h2 className="dash-welcome-name">{companyName || '...'}</h2>
-          <p className="dash-welcome-desc">오늘도 안전하고 편리한 차량 서비스를 제공해 보세요.</p>
+          <p className="dash-welcome-desc">{t('dashboard.desc')}</p>
         </div>
         <div className="dash-welcome-illo" aria-hidden>
-          <span className="illo-car">🚗</span>
+          <span className="illo-car">{'\ud83d\ude97'}</span>
           <span className="illo-road" />
         </div>
       </div>
 
       {/* 2. 핵심 지표 4개 */}
-      {/* KPI 카드 (폴백 데이터) */}
       <div className="dash-kpi-grid">
         {rightCards.map((c, i) => (
           <div key={i} className="dash-kpi-card" style={{ '--ka': c.accent }}
@@ -164,19 +169,18 @@ export default function DashboardPage() {
       </div>
 
       {/* 3. 수익 추이 그래프 */}
-      {/* 수익 추이 그래프 (폴백 데이터) */}
       <div className="dash-chart-card">
         <div className="dash-chart-header">
           <div>
-            <div className="dash-chart-title">수익 추이</div>
-            <div className="dash-chart-sub">최근 6개월 누적 수익</div>
+            <div className="dash-chart-title">{t('dashboard.chartTitle')}</div>
+            <div className="dash-chart-sub">{t('dashboard.chartSubtitle')}</div>
           </div>
           <div className="dash-period-tabs">
-            {['월별', '분기'].map(p => (
-              <button key={p}
-                className={`dash-period-btn${chartPeriod === p ? ' active' : ''}`}
-                onClick={() => setChartPeriod(p)}
-              >{p}</button>
+            {periodOptions.map(p => (
+              <button key={p.id}
+                className={`dash-period-btn${chartPeriod === p.id ? ' active' : ''}`}
+                onClick={() => setChartPeriod(p.id)}
+              >{p.label}</button>
             ))}
           </div>
         </div>
@@ -189,21 +193,20 @@ export default function DashboardPage() {
 
         <SplineChart data={MONTHLY} />
 
-        {/* 이번 달 / 전월 대비 / 6개월 합계 요약 */}
         <div className="dash-chart-footer">
           <div className="dash-chart-stat">
             <span className="dash-chart-stat-value">12.5M</span>
-            <span className="dash-chart-stat-label">이번 달</span>
+            <span className="dash-chart-stat-label">{t('dashboard.statThisMonth')}</span>
           </div>
           <div className="dash-chart-divider" />
           <div className="dash-chart-stat">
             <span className="dash-chart-stat-value">+60%</span>
-            <span className="dash-chart-stat-label">전월 대비</span>
+            <span className="dash-chart-stat-label">{t('dashboard.statVsPrev')}</span>
           </div>
           <div className="dash-chart-divider" />
           <div className="dash-chart-stat">
             <span className="dash-chart-stat-value">45.9M</span>
-            <span className="dash-chart-stat-label">6개월 합계</span>
+            <span className="dash-chart-stat-label">{t('dashboard.statSixMonth')}</span>
           </div>
         </div>
       </div>

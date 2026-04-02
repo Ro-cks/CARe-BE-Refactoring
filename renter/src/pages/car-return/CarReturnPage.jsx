@@ -91,31 +91,32 @@ export default function CarReturnPage() {
     setStep('select')
   }
 
-  const submitReturn = async () => {
+  const submitReturn = () => {
     const rid = reservation?.reservationId
     if (rid) {
       localStorage.setItem(`disputePending_${rid}`, 'true')
       localStorage.setItem(`disputeDate_${rid}`, reservation.endDate || '')
     }
-    setStep('submitting')
+
+    // 스캔 업로드 + 반납 처리는 백그라운드에서 실행 (AI 리포트 생성 포함)
     if (rid) {
-      try {
-        // 스캔 업로드를 먼저 완료한 후 반납 처리
-        if (!fromScan) {
-          await Promise.all(PANELS.filter(p => photos[p.id]).map(p => scanAfter(rid, p.id, photos[p.id])))
+      ;(async () => {
+        try {
+          if (!fromScan) {
+            await Promise.all(PANELS.filter(p => photos[p.id]).map(p => scanAfter(rid, p.id, photos[p.id])))
+          }
+          await Promise.all([
+            lockSmartKey(rid).catch(e => console.error('[Return] 스마트키 반납 실패:', e)),
+            completeReservation(rid),
+          ])
+        } catch (e) {
+          console.error('[Return] 반납 처리 실패:', e)
         }
-        await Promise.all([
-          lockSmartKey(rid).catch(e => console.error('[Return] 스마트키 반납 실패:', e)),
-          completeReservation(rid),
-        ])
-        setStep('done')
-      } catch (e) {
-        console.error('[Return] 반납 처리 실패:', e)
-        setStep('done')
-      }
-    } else {
-      setStep('done')
+      })()
     }
+
+    // API 완료를 기다리지 않고 즉시 완료 화면으로
+    setStep('done')
   }
 
   // ─── 스캔 완료 후 반납 확인 (fromScan) ──────────────────────

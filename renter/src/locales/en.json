@@ -339,6 +339,8 @@
     "backToList": "Back to List"
   },
   "dispute": {
+    "reasonNewScratch": "New scratch detected",
+    "reasonLowSimilarity": "{{percent}}% difference from original images",
     "title": "Dispute Detail",
     "statusOpen": "Dispute Filed",
     "statusPending": "In Progress",

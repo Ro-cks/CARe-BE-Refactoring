@@ -339,6 +339,11 @@
     "backToList": "예약 목록으로"
   },
   "dispute": {
+    "presetNewScratch": "새 흠집",
+    "presetLowSimilarity": "유사도 다름 ({{percent}}%)",
+    "presetDirect": "직접 입력",
+    "reasonNewScratch": "새 흠집 감지",
+    "reasonLowSimilarity": "기존 이미지와 유사도 {{percent}}% 다름",
     "title": "분쟁 상세",
     "statusOpen": "분쟁 신청됨",
     "statusPending": "처리 중",

@@ -63,6 +63,7 @@ export default function DisputeHistoryPage() {
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [sortOrder, setSortOrder] = useState('desc')
 
   useEffect(() => {
     const reservationId = reservation?.reservationId
@@ -74,13 +75,21 @@ export default function DisputeHistoryPage() {
   }, [reservation?.reservationId])
 
   const filtered = useMemo(() => {
-    return scratches.filter(item => {
+    let result = scratches.filter(item => {
       const partKey = getPartKey(item.carPart)
       const matchPart = activePart === 'all' || partKey === activePart
       const matchQuery = !query || getPartLabel(item.carPart).includes(query)
       return matchPart && matchQuery
     })
-  }, [scratches, activePart, query])
+
+    result.sort((a, b) => {
+      const timeA = new Date(a.createdAt).getTime()
+      const timeB = new Date(b.createdAt).getTime()
+      return sortOrder === 'desc' ? timeB - timeA : timeA - timeB
+    })
+
+    return result
+  }, [scratches, activePart, query, sortOrder])
 
   const handleSubmit = async () => {
     if (!selectedLogId) return
@@ -161,16 +170,27 @@ export default function DisputeHistoryPage() {
           )}
         </div>
 
-        <div className="dh-filter-row">
-          {PARTS.map(part => (
-            <button
-              key={part.id}
-              className={`dh-filter-tab${activePart === part.id ? ' active' : ''}`}
-              onClick={() => setActivePart(part.id)}
-            >
-              {part.label}
-            </button>
-          ))}
+        <div className="dh-filter-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '2px', flex: 1 }}>
+            {PARTS.map(part => (
+              <button
+                key={part.id}
+                className={`dh-filter-tab${activePart === part.id ? ' active' : ''}`}
+                onClick={() => setActivePart(part.id)}
+              >
+                {part.label}
+              </button>
+            ))}
+          </div>
+          <button 
+            className={`dh-sort-toggle ${sortOrder === 'asc' ? 'asc' : ''}`}
+            onClick={() => setSortOrder(prev => prev === 'desc' ? 'asc' : 'desc')}
+          >
+            <span>{sortOrder === 'desc' ? '최신순' : '과거순'}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14m0 0l-6-6m6 6l6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
         </div>
 
         {loading && <div className="dh-empty"><p>흠집 기록을 불러오는 중...</p></div>}

@@ -177,5 +177,9 @@
     "error": "Erreur",
     "chargeLabel": "Recharge",
     "paymentLabel": "Paiement"
+  },
+  "dispute": {
+    "reasonNewScratch": "Nouvelle rayure détectée",
+    "reasonLowSimilarity": "Différence de {{percent}}% avec les images d'origine"
   }
 }

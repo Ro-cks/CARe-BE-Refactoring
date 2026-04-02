@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import TabFilter from '../../components/TabFilter'
 import ReservationTable from '../../components/ReservationTable'
 import ReservationService from '../../services/ReservationService'
@@ -6,6 +7,7 @@ import './ReservationPage.css'
 
 
 export default function ReservationPage() {
+  const { t } = useTranslation()
   const [activeTab, setActiveTab] = useState('ongoing')
   const [reservations, setReservations] = useState([])
   const [loading, setLoading] = useState(true)
@@ -28,22 +30,21 @@ export default function ReservationPage() {
 
   const getStatusLabel = (status) => {
     const statusMap = {
-      RESERVED: '예약완료',
-      IN_USE: '이용중',
-      AFTER_SCAN: '반납대기',
-      COMPLETED: '반납완료',
-      DISPUTE: '분쟁중',
+      RESERVED: t('reservation.statusReserved'),
+      IN_USE: t('reservation.statusInUse'),
+      AFTER_SCAN: t('reservation.statusReturnPending'),
+      COMPLETED: t('reservation.statusReturned'),
+      DISPUTE: t('reservation.statusDispute'),
     }
     return statusMap[status] || status
   }
 
   const getCategoryFromStatus = (status, depositStatus, disputeId, disputeStatus) => {
     if (disputeId) {
-      if (disputeStatus === 'COMPLETED') return 'completed'   // 분쟁 완료 → 반납 탭
-      if (disputeStatus === 'OPEN')      return 'dispute'     // 분쟁 진행중
-      // disputeStatus null(백엔드 미반영) → depositStatus로 폴백
+      if (disputeStatus === 'COMPLETED') return 'completed'
+      if (disputeStatus === 'OPEN')      return 'dispute'
       if (depositStatus === 'LOCKED')    return 'dispute'
-      return 'completed'                                      // LOCKED 아니면 완료로 간주
+      return 'completed'
     }
     if (status === 'COMPLETED') return 'completed'
     return 'ongoing'
@@ -66,6 +67,7 @@ export default function ReservationPage() {
             endDate: formatDate(reservation.returnDate),
             amount: reservation.totalPrice != null ? `${reservation.totalPrice.toLocaleString()} CARE` : '-',
             status: getStatusLabel(reservation.status),
+            rawStatus: reservation.status,
             disputeId: reservation.disputeId || null,
             disputeStatus: reservation.disputeStatus || null,
             category: getCategoryFromStatus(reservation.status, reservation.depositStatus, reservation.disputeId, reservation.disputeStatus),
@@ -95,62 +97,62 @@ export default function ReservationPage() {
     )
 
   const tabs = [
-    { id: 'ongoing',   label: '진행중', count: stats.ongoing   },
-    { id: 'completed', label: '반납',   count: stats.completed },
-    { id: 'dispute',   label: '분쟁',   count: stats.dispute   },
+    { id: 'ongoing',   label: t('reservation.tabActive'),  count: stats.ongoing   },
+    { id: 'completed', label: t('reservation.tabReturn'),  count: stats.completed },
+    { id: 'dispute',   label: t('reservation.tabDispute'), count: stats.dispute   },
   ]
 
   return (
     <div className="reservation-page">
 
-      {/* ── 헤더 ── */}
+      {/* 헤더 */}
       <div className="res-header">
         <div>
-          <h1 className="res-title">예약 관리</h1>
-          <p className="res-subtitle">진행 중인 예약과 반납 현황을 확인하세요.</p>
+          <h1 className="res-title">{t('reservation.title')}</h1>
+          <p className="res-subtitle">{t('reservation.subtitle')}</p>
         </div>
       </div>
 
-      {/* ── KPI 카드 ── */}
+      {/* KPI 카드 */}
       <div className="res-kpi-grid">
         <div className="res-kpi-card" style={{ '--ka': '#4A90E2' }}>
-          <div className="res-kpi-icon" style={{ '--ka': '#4A90E2' }}>📊</div>
+          <div className="res-kpi-icon" style={{ '--ka': '#4A90E2' }}>{'\ud83d\udcca'}</div>
           <div>
-            <div className="res-kpi-label">전체 예약</div>
-            <div className="res-kpi-value">{stats.total}<span className="res-kpi-unit">건</span></div>
+            <div className="res-kpi-label">{t('reservation.kpiTotal')}</div>
+            <div className="res-kpi-value">{stats.total}<span className="res-kpi-unit">{t('reservation.kpiUnit')}</span></div>
           </div>
         </div>
         <div className="res-kpi-card" style={{ '--ka': '#F5A623' }}>
-          <div className="res-kpi-icon" style={{ '--ka': '#F5A623' }}>🚗</div>
+          <div className="res-kpi-icon" style={{ '--ka': '#F5A623' }}>{'\ud83d\ude97'}</div>
           <div>
-            <div className="res-kpi-label">진행중</div>
-            <div className="res-kpi-value">{stats.ongoing}<span className="res-kpi-unit">건</span></div>
+            <div className="res-kpi-label">{t('reservation.kpiActive')}</div>
+            <div className="res-kpi-value">{stats.ongoing}<span className="res-kpi-unit">{t('reservation.kpiUnit')}</span></div>
           </div>
         </div>
         <div className="res-kpi-card" style={{ '--ka': '#7ED321' }}>
-          <div className="res-kpi-icon" style={{ '--ka': '#7ED321' }}>✅</div>
+          <div className="res-kpi-icon" style={{ '--ka': '#7ED321' }}>{'\u2705'}</div>
           <div>
-            <div className="res-kpi-label">반납</div>
-            <div className="res-kpi-value">{stats.completed}<span className="res-kpi-unit">건</span></div>
+            <div className="res-kpi-label">{t('reservation.kpiReturn')}</div>
+            <div className="res-kpi-value">{stats.completed}<span className="res-kpi-unit">{t('reservation.kpiUnit')}</span></div>
           </div>
         </div>
         <div className="res-kpi-card" style={{ '--ka': '#D0021B' }}>
-          <div className="res-kpi-icon" style={{ '--ka': '#D0021B' }}>⚠️</div>
+          <div className="res-kpi-icon" style={{ '--ka': '#D0021B' }}>{'\u26a0\ufe0f'}</div>
           <div>
-            <div className="res-kpi-label">분쟁</div>
-            <div className="res-kpi-value">{stats.dispute}<span className="res-kpi-unit">건</span></div>
+            <div className="res-kpi-label">{t('reservation.kpiDispute')}</div>
+            <div className="res-kpi-value">{stats.dispute}<span className="res-kpi-unit">{t('reservation.kpiUnit')}</span></div>
           </div>
         </div>
       </div>
 
-      {/* ── 테이블 카드 ── */}
+      {/* 테이블 카드 */}
       <div className="res-content-card">
         <div className="res-content-inner">
           <TabFilter tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
           {loading ? (
             <div className="empty-container">
               <div className="loading-spinner" />
-              <p>데이터를 불러오는 중입니다...</p>
+              <p>{t('reservation.loading')}</p>
             </div>
           ) : (
             <div className="res-table-wrapper">

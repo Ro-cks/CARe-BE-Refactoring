@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import AuthService from '../../services/AuthService'
 import './SignUpPage.css'
 
 export default function SignUpPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
     businessNumber: '',
@@ -33,13 +35,13 @@ export default function SignUpPage() {
 
     // Validate password match
     if (formData.password !== formData.confirmPassword) {
-      setError('비밀번호가 일치하지 않습니다.')
+      setError(t('signup.errorPasswordMismatch'))
       return
     }
 
     // Validate password length
     if (formData.password.length < 8) {
-      setError('비밀번호는 8자 이상이어야 합니다.')
+      setError(t('signup.errorPasswordLength'))
       return
     }
 
@@ -56,28 +58,21 @@ export default function SignUpPage() {
       })
 
       if (result.success) {
-        alert('회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.')
+        alert(t('signup.successAlert'))
         navigate('/login')
       } else {
-        setError(result.message || '회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.')
+        setError(result.message || t('signup.errorFailed'))
       }
     } catch (err) {
-      console.error('회원가입 예외:', err)
-      setError('서버 연결에 실패했습니다. 네트워크 상태를 확인해주세요.')
+      console.error('Signup error:', err)
+      setError(t('signup.errorNetwork'))
     } finally {
       setLoading(false)
     }
   }
 
-  // const handleSocialSignUp = (provider) => {
-  //   console.log('Social sign up:', provider)
-  //   // TODO: 소셜 회원가입 구현
-  // }
-
   return (
     <div className="signup-container">
-      {/* Left Side - Image */}
-      {/* <div className="signup-image-section"> */}
       <div
         className="signup-image-section"
         style={{
@@ -91,20 +86,19 @@ export default function SignUpPage() {
         <div className="signup-logo">CARe</div>
       </div>
 
-      {/* Right Side - Form */}
       <div className="signup-form-section">
         <div className="signup-form-wrapper">
           <h1 className="signup-title">
-            회원가입
+            {t('signup.title')}
           </h1>
           <p className="signup-subtitle">
-            CARe와 함께 렌터카 사업을 시작해보세요.
-            빠르고 간편한 회원가입으로 시작하세요.
+            {t('signup.subtitle1')}
+            {t('signup.subtitle2')}
           </p>
 
           <form onSubmit={handleSubmit} className="signup-form">
             <div className="form-group">
-              <label htmlFor="businessNumber">사업자 등록번호</label>
+              <label htmlFor="businessNumber">{t('signup.bizNumberLabel')}</label>
               <div className="input-wrapper">
                 <input
                   type="text"
@@ -119,7 +113,7 @@ export default function SignUpPage() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="airportCode">공항 코드</label>
+              <label htmlFor="airportCode">{t('signup.airportCodeLabel')}</label>
               <div className="input-wrapper">
                 <input
                   type="text"
@@ -127,14 +121,14 @@ export default function SignUpPage() {
                   name="airportCode"
                   value={formData.airportCode}
                   onChange={handleChange}
-                  placeholder="ICN (인천국제공항)"
+                  placeholder="ICN"
                   required
                 />
               </div>
             </div>
 
             <div className="form-group">
-              <label htmlFor="languageCode">언어</label>
+              <label htmlFor="languageCode">{t('signup.languageLabel')}</label>
               <div className="input-wrapper">
                 <select
                   id="languageCode"
@@ -143,7 +137,7 @@ export default function SignUpPage() {
                   onChange={handleChange}
                   required
                 >
-                  <option value="">언어를 선택하세요</option>
+                  <option value="">{t('signup.languagePlaceholder')}</option>
                   <option value="ko">한국어</option>
                   <option value="en">English</option>
                   <option value="ja">日本語</option>
@@ -162,7 +156,7 @@ export default function SignUpPage() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="companyName">회사명</label>
+              <label htmlFor="companyName">{t('signup.companyNameLabel')}</label>
               <div className="input-wrapper">
                 <input
                   type="text"
@@ -170,14 +164,14 @@ export default function SignUpPage() {
                   name="companyName"
                   value={formData.companyName}
                   onChange={handleChange}
-                  placeholder="주식회사 CARe"
+                  placeholder="CARe Inc."
                   required
                 />
               </div>
             </div>
 
             <div className="form-group">
-              <label htmlFor="email">Email Id</label>
+              <label htmlFor="email">{t('signup.emailLabel')}</label>
               <div className="input-wrapper">
                 <input
                   type="email"
@@ -192,7 +186,7 @@ export default function SignUpPage() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">{t('signup.passwordLabel')}</label>
               <div className="input-wrapper">
                 <input
                   type="password"
@@ -207,7 +201,7 @@ export default function SignUpPage() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="confirmPassword">Password 확인</label>
+              <label htmlFor="confirmPassword">{t('signup.confirmPasswordLabel')}</label>
               <div className="input-wrapper">
                 <input
                   type="password"
@@ -228,16 +222,16 @@ export default function SignUpPage() {
             )}
 
             <button type="submit" className="signup-button" disabled={loading}>
-              {loading ? '회원가입 중...' : 'SIGN UP'}
+              {loading ? t('signup.signupLoading') : t('signup.signupButton')}
             </button>
           </form>
 
           <p className="login-link">
-            이미 계정이 있으신가요? <Link to="/login">로그인</Link>
+            {t('signup.hasAccount')} <Link to="/login">{t('signup.loginLink')}</Link>
           </p>
 
           <p className="copyright">
-            ©CARe 2026 ALL RIGHTS RESERVED
+            {t('signup.copyright')}
           </p>
         </div>
       </div>

@@ -1,17 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import CarService from '../../services/CarService'
 import AuthService from '../../services/AuthService'
 import './CarRegisterPage.css'
 
-const IMAGE_SLOTS = [
-  { key: 'frontImage', label: '전면', icon: '⬆️' },
-  { key: 'rearImage',  label: '후면', icon: '⬇️' },
-  { key: 'leftImage',  label: '좌측', icon: '⬅️' },
-  { key: 'rightImage', label: '우측', icon: '➡️' },
-]
-
-// 차량 모델 목록 폴백 데이터 (GET /car-models 엔드포인트 필요)
+// 차량 모델 목록 폴백 데이터
 const CAR_MODELS = [
   { id: 'model-001', name: '현대 아이오닉5' },
   { id: 'model-002', name: '기아 EV6' },
@@ -21,7 +15,15 @@ const CAR_MODELS = [
 ]
 
 export default function CarRegisterPage() {
+  const { t } = useTranslation()
   const navigate = useNavigate()
+
+  const IMAGE_SLOTS = [
+    { key: 'frontImage', label: t('carRegister.dirFront'), icon: '\u2b06\ufe0f' },
+    { key: 'rearImage',  label: t('carRegister.dirRear'),  icon: '\u2b07\ufe0f' },
+    { key: 'leftImage',  label: t('carRegister.dirLeft'),  icon: '\u2b05\ufe0f' },
+    { key: 'rightImage', label: t('carRegister.dirRight'), icon: '\u27a1\ufe0f' },
+  ]
 
   const [formData, setFormData] = useState({
     modelId: '',
@@ -54,11 +56,11 @@ export default function CarRegisterPage() {
     if (!file) return
 
     if (file.size > 10 * 1024 * 1024) {
-      setError('이미지 크기는 10MB 이하여야 합니다.')
+      setError(t('carRegister.errorFileSize'))
       return
     }
     if (!file.type.startsWith('image/')) {
-      setError('이미지 파일만 업로드할 수 있습니다.')
+      setError(t('carRegister.errorFileType'))
       return
     }
 
@@ -80,26 +82,26 @@ export default function CarRegisterPage() {
     setError('')
 
     const companyId = AuthService.getCompanyId()
-    if (!companyId)       return setError('companyId가 없습니다. 다시 로그인해주세요.')
-    if (!formData.modelId)    return setError('차량 모델을 선택해주세요.')
-    if (!formData.plateNumber)  return setError('차량 번호를 입력해주세요.')
-    if (!formData.dailyPrice)   return setError('일일 요금을 입력해주세요.')
+    if (!companyId)       return setError(t('carRegister.errorNoCompany'))
+    if (!formData.modelId)    return setError(t('carRegister.errorNoModel'))
+    if (!formData.plateNumber)  return setError(t('carRegister.errorNoPlate'))
+    if (!formData.dailyPrice)   return setError(t('carRegister.errorNoPrice'))
     if (!formData.frontImage || !formData.rearImage ||
         !formData.leftImage  || !formData.rightImage)
-      return setError('전후좌우 이미지를 모두 업로드해주세요.')
+      return setError(t('carRegister.errorNoImages'))
 
     setLoading(true)
     try {
       const result = await CarService.registerCar(companyId, formData)
       if (result.success) {
-        alert('차량이 성공적으로 등록되었습니다.')
+        alert(t('carRegister.successAlert'))
         navigate('/cars')
       } else {
         setError(result.message)
       }
     } catch (err) {
-      console.error('차량 등록 예외:', err)
-      setError('차량 등록 중 오류가 발생했습니다.')
+      console.error('Car register error:', err)
+      setError(t('carRegister.errorRegister'))
     } finally {
       setLoading(false)
     }
@@ -108,29 +110,29 @@ export default function CarRegisterPage() {
   return (
     <div className="car-register-page">
 
-      {/* ── 헤더 ── */}
+      {/* 헤더 */}
       <div className="reg-header">
         <button className="reg-back-button" onClick={() => navigate('/cars')}>
-          ← 돌아가기
+          {t('carRegister.back')}
         </button>
         <div className="reg-title-wrap">
-          <h1 className="reg-title">차량 등록</h1>
-          <p className="reg-subtitle">새 차량의 정보와 사진을 입력해주세요.</p>
+          <h1 className="reg-title">{t('carRegister.title')}</h1>
+          <p className="reg-subtitle">{t('carRegister.subtitle')}</p>
         </div>
       </div>
 
-      {/* ── 폼 ── */}
+      {/* 폼 */}
       <form onSubmit={handleSubmit} className="reg-form-body">
 
         {/* 기본 정보 카드 */}
         <div className="reg-card">
-          <h2 className="reg-section-title">기본 정보</h2>
+          <h2 className="reg-section-title">{t('carRegister.sectionBasic')}</h2>
           <div className="reg-section-divider" />
 
           <div className="reg-form-grid">
             <div className="reg-form-group">
               <label className="reg-label" htmlFor="modelId">
-                차량 모델<span className="reg-label-required">*</span>
+                {t('carRegister.modelLabel')}<span className="reg-label-required">*</span>
               </label>
               <select
                 className="reg-select"
@@ -140,7 +142,7 @@ export default function CarRegisterPage() {
                 onChange={handleInputChange}
                 required
               >
-                <option value="">모델을 선택하세요</option>
+                <option value="">{t('carRegister.modelPlaceholder')}</option>
                 {CAR_MODELS.map((m) => (
                   <option key={m.id} value={m.id}>{m.name}</option>
                 ))}
@@ -149,7 +151,7 @@ export default function CarRegisterPage() {
 
             <div className="reg-form-group">
               <label className="reg-label" htmlFor="plateNumber">
-                차량 번호<span className="reg-label-required">*</span>
+                {t('carRegister.plateLabel')}<span className="reg-label-required">*</span>
               </label>
               <input
                 className="reg-input"
@@ -158,14 +160,14 @@ export default function CarRegisterPage() {
                 name="plateNumber"
                 value={formData.plateNumber}
                 onChange={handleInputChange}
-                placeholder="예: 12가 3456"
+                placeholder={t('carRegister.platePlaceholder')}
                 required
               />
             </div>
 
             <div className="reg-form-group">
               <label className="reg-label" htmlFor="dailyPrice">
-                일일 요금 (CARE)<span className="reg-label-required">*</span>
+                {t('carRegister.priceLabel')}<span className="reg-label-required">*</span>
               </label>
               <input
                 className="reg-input"
@@ -174,7 +176,7 @@ export default function CarRegisterPage() {
                 name="dailyPrice"
                 value={formData.dailyPrice}
                 onChange={handleInputChange}
-                placeholder="예: 80000"
+                placeholder={t('carRegister.pricePlaceholder')}
                 min="0"
                 required
               />
@@ -184,7 +186,7 @@ export default function CarRegisterPage() {
 
         {/* 차량 사진 카드 */}
         <div className="reg-card">
-          <h2 className="reg-section-title">차량 사진</h2>
+          <h2 className="reg-section-title">{t('carRegister.sectionPhoto')}</h2>
           <div className="reg-section-divider" />
 
           <div className="reg-image-grid">
@@ -202,13 +204,13 @@ export default function CarRegisterPage() {
                         type="button"
                         className="reg-remove-image"
                         onClick={(e) => { e.preventDefault(); removeImage(key) }}
-                      >✕</button>
+                      >{'\u2715'}</button>
                     </div>
                   ) : (
                     <div className="reg-upload-placeholder">
-                      <span className="reg-upload-icon">📷</span>
-                      <span className="reg-upload-text">클릭하여 업로드</span>
-                      <span className="reg-upload-hint">최대 10MB · JPG, PNG</span>
+                      <span className="reg-upload-icon">{'\ud83d\udcf7'}</span>
+                      <span className="reg-upload-text">{t('carRegister.uploadText')}</span>
+                      <span className="reg-upload-hint">{t('carRegister.uploadHint')}</span>
                     </div>
                   )}
                   <input
@@ -226,7 +228,7 @@ export default function CarRegisterPage() {
         {/* 에러 */}
         {error && (
           <div className="reg-error">
-            <span className="reg-error-icon">⚠️</span>
+            <span className="reg-error-icon">{'\u26a0\ufe0f'}</span>
             {error}
           </div>
         )}
@@ -239,14 +241,14 @@ export default function CarRegisterPage() {
             onClick={() => navigate('/cars')}
             disabled={loading}
           >
-            취소
+            {t('carRegister.cancelBtn')}
           </button>
           <button
             type="submit"
             className="reg-submit-btn"
             disabled={loading}
           >
-            {loading ? '등록 중...' : '🚗 차량 등록'}
+            {loading ? t('carRegister.registerLoading') : t('carRegister.registerBtn')}
           </button>
         </div>
 

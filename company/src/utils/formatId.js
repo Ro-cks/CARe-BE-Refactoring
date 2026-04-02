@@ -1,3 +1,5 @@
+import i18n from '../i18n'
+
 /**
  * UUID를 짧은 표시 형식으로 변환합니다.
  * UUID (예: "550e8400-e29b-41d4-a716-446655440000") → "#550E8400"
@@ -48,12 +50,82 @@ const CAR_PART_MAP = {
   front_right_wheel:  '우측 전방 휠',
   rear_left_wheel:    '좌측 후방 휠',
   rear_right_wheel:   '우측 후방 휠',
-  // 면 단위
+  // 면/구역 (AI Report Zones)
+  'front-left':       '좌측 전방',
+  'front_left':       '좌측 전방',
+  'front-right':      '우측 전방',
+  'front_right':      '우측 전방',
+  'rear-left':        '좌측 후방',
+  'rear_left':        '좌측 후방',
+  'rear-right':       '우측 후방',
+  'rear_right':       '우측 후방',
+  // 기본 면 단위
   front:              '전면',
   rear:               '후면',
+  back:               '후면',
+  left:               '좌측',
+  right:              '우측',
   left_side:          '좌측면',
   right_side:         '우측면',
   bottom:             '하부',
+  interior:           '내부',
+}
+
+const CAR_PART_MAP_JA = {
+  // 도어
+  front_left_door:    '左側前方ドア',
+  front_right_door:   '右側前方ドア',
+  rear_left_door:     '左側後方ドア',
+  rear_right_door:    '右側後方ドア',
+  left_door:          '左側ドア',
+  right_door:         '右側ドア',
+  // 범퍼
+  front_bumper:       '前方バンパー',
+  rear_bumper:        '後方バンパー',
+  // 외장 패널
+  hood:               'ボンネット',
+  trunk:              'トランク',
+  roof:               'ルーフ',
+  // 펜더
+  front_left_fender:  '左側前方フェンダー',
+  front_right_fender: '右側前方フェンダー',
+  rear_left_fender:   '左側後方フェンダー',
+  rear_right_fender:  '右側後方フェンダー',
+  left_front_fender:  '左側前方フェンダー',
+  right_front_fender: '右側前方フェンダー',
+  left_rear_fender:   '左側後方フェンダー',
+  right_rear_fender:  '右側後方フェンダー',
+  // 유리
+  windshield:         '前面ガラス',
+  front_windshield:   '前面ガラス',
+  rear_windshield:    '後面ガラス',
+  // 사이드 미러
+  left_mirror:        '左側サイドミラー',
+  right_mirror:       '右側サイドミラー',
+  // 휠·타이어
+  front_left_wheel:   '左側前方ホイール',
+  front_right_wheel:  '右側前方ホイール',
+  rear_left_wheel:    '左側後方ホイール',
+  rear_right_wheel:   '右側後方ホイール',
+  // 면/구역 (AI Report Zones)
+  'front-left':       '左側前方',
+  'front_left':       '左側前方',
+  'front-right':      '右側前方',
+  'front_right':      '右側前方',
+  'rear-left':        '左側後方',
+  'rear_left':        '左側後方',
+  'rear-right':       '右側後方',
+  'rear_right':       '右側後方',
+  // 기본 면 단위
+  front:              '前面',
+  rear:               '後面',
+  back:               '後面',
+  left:               '左側',
+  right:              '右側',
+  left_side:          '左側面',
+  right_side:         '右側面',
+  bottom:             '下部',
+  interior:           '内部',
 }
 
 /**
@@ -62,5 +134,7 @@ const CAR_PART_MAP = {
  */
 export const carPartLabel = (part) => {
   if (!part) return null
-  return CAR_PART_MAP[part.toLowerCase()] ?? part
+  const isJa = i18n?.language?.startsWith('ja')
+  const map = isJa ? CAR_PART_MAP_JA : CAR_PART_MAP
+  return map[part.toLowerCase()] ?? part
 }
