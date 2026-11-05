@@ -52,6 +52,7 @@ class CompanyControllerTest {
                 "renter-name",
                 120000,
                 "OPEN",
+                false,
                 LocalDateTime.now()
         );
 

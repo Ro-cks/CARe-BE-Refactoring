@@ -44,18 +44,15 @@ class DisputeSettlementControllerTest {
                 "dispute-1",
                 "reservation-1",
                 "after-log-1",
-                null,
+                null, null, null,                   // 대상 흠집 부위, 원본 URL, 크롭 URL
+                null, null, null,                   // 방어 흠집 ID, 원본 URL, 크롭 URL
                 "OPEN",
                 "문콕 흔적 확인",
                 120000,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                false,
-                null,
+                null, null, false, false, null,     // 정산 금액, 상태, 업체 동의, 렌터 동의, 합의 시각
+                null, null, null,                   // 스냅샷 ID, 반납 전 URL, 반납 후 URL
+                null, null, null,                   // 유사도, 차이 점수, 임계값
+                false, null,                        // 경고 여부, 스냅샷 시각
                 LocalDateTime.now(),
                 LocalDateTime.now()
         );

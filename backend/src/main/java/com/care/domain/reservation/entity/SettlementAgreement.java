@@ -1,7 +1,5 @@
 package com.care.domain.reservation.entity;
 
-import java.util.Objects;
-
 public class SettlementAgreement {
 
     private Long amount;              // 제안 금액 (제안 전에는 null)
@@ -9,7 +7,9 @@ public class SettlementAgreement {
     private boolean companyAgreed;
     private boolean renterAgreed;
 
-    public void agree(Party party, Long amount, SettlementStatus status) {
+    public void agree(Party party, long amount, SettlementStatus status) {
+        if (!isValidInput(amount, status)) throw new IllegalArgumentException("잘못된 입력입니다.");
+        if (isCompleted()) throw new IllegalStateException("이미 합의가 완료되었습니다.");
 
         // 1. 현재 제안과 다르면 양쪽 동의를 지운다
         if (isDifferentProposal(amount, status)) {
@@ -28,12 +28,20 @@ public class SettlementAgreement {
         }
     }
 
-    private boolean isDifferentProposal(Long amount, SettlementStatus status) {
+    private boolean isValidInput(long amount, SettlementStatus status) {
+        if (amount < 0) return false;
+
+        if (status == null || status == SettlementStatus.PENDING) return false;
+
+        return true;
+    }
+
+    private boolean isDifferentProposal(long amount, SettlementStatus status) {
         // 아직 제안이 없으면 false
         if (this.status == null) return false;
 
         // 금액이나 결과가 다르면 true, 모두 같으면 false
-        return (Objects.equals(this.amount, amount)) || (this.status != status);
+        return (this.amount != amount) || (this.status != status);
     }
 
     public boolean isCompleted() {

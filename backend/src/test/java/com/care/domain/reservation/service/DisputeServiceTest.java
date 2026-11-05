@@ -138,7 +138,8 @@ class DisputeServiceTest {
             .willReturn(List.of(defenseScratch));
         given(aiScratchSimilarityClient.compareByUrls(any(), any()))
             .willReturn(new AiScratchSimilarityResult(0.55, 0.12));
-        given(disputeRepository.existsByTargetScratch_LogIdAndStatusNot("after-log-1", "RESOLVED"))
+        given(disputeRepository.existsByTargetScratch_LogIdAndStatusNotIn(
+                "after-log-1", List.of("COMPLETED", "RESOLVED")))
                 .willReturn(false);
         given(disputeRepository.save(any(Dispute.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
