@@ -85,7 +85,7 @@ class SettlementAgreementTest {
     }
 
     @Test
-    void 분쟁_상태가_null이면_에러가_난다() {
+    void 정산_결과가_null이면_에러가_난다() {
         SettlementAgreement agreement = new SettlementAgreement();
 
         assertThatThrownBy(() -> agreement.agree(Party.COMPANY, 0, null))
@@ -93,7 +93,7 @@ class SettlementAgreementTest {
     }
 
     @Test
-    void 분쟁_상태가_PENDING이면_에러가_난다() {
+    void 정산_결과가_PENDING이면_에러가_난다() {
         SettlementAgreement agreement = new SettlementAgreement();
 
         assertThatThrownBy(() -> agreement.agree(Party.COMPANY, 0, SettlementStatus.PENDING))
