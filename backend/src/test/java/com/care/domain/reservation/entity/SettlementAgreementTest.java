@@ -19,24 +19,25 @@ class SettlementAgreementTest {
 
     @Test
     void 상대가_다른_금액을_제안하면_합의가_완료되지_않는다() {
-        // TODO: 업체는 50000원, 렌터는 30000원으로 agree()를 호출하세요.
+        // 업체는 50000원, 렌터는 30000원으로 agree()를 호출
         SettlementAgreement agreement = new SettlementAgreement();
 
         agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
         agreement.agree(Party.RENTER, 30000L, SettlementStatus.COMPLETED);
-        // TODO: isCompleted()가 false인지 확인하세요.
 
+        // isCompleted()가 false인지 확인
         assertThat(agreement.isCompleted()).isFalse();
     }
 
     @Test
     void 상대가_다른_결과를_제안하면_합의가_완료되지_않는다() {
-        // TODO: 업체는 50000원 COMPLETED, 렌터는 50000원 REFUNDED로 agree()를 호출하세요.
+        // 업체는 50000원 COMPLETED, 렌터는 50000원 REFUNDED로 agree()를 호출
         SettlementAgreement agreement = new SettlementAgreement();
 
         agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
         agreement.agree(Party.RENTER, 50000L, SettlementStatus.REFUNDED);
-        // TODO: isCompleted()가 false인지 확인하세요.
+
+        // isCompleted()가 false인지 확인
         assertThat(agreement.isCompleted()).isFalse();
     }
 
