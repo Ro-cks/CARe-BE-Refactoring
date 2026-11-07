@@ -100,4 +100,43 @@ class SettlementAgreementTest {
         assertThatThrownBy(() -> agreement.agree(Party.COMPANY, 0, SettlementStatus.PENDING))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void 첫_제안을_하면_기대값은_BEGIN이다() {
+        SettlementAgreement agreement = new SettlementAgreement();
+
+        AgreementResult result = agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
+
+        assertThat(result).isEqualTo(AgreementResult.BEGIN);
+    }
+
+    @Test
+    void 역제안을_하면_기대값은_COUNTER이다() {
+        SettlementAgreement agreement = new SettlementAgreement();
+
+        agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
+        AgreementResult result = agreement.agree(Party.RENTER, 40_000, SettlementStatus.COMPLETED);
+
+        assertThat(result).isEqualTo(AgreementResult.COUNTER);
+    }
+
+    @Test
+    void 중복_요청이_들어오면_기대값은_DUPLICATED이다() {
+        SettlementAgreement agreement = new SettlementAgreement();
+
+        agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
+        AgreementResult result = agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
+
+        assertThat(result).isEqualTo(AgreementResult.DUPLICATED);
+    }
+
+    @Test
+    void 합의가_완료되면_기대값은_COMPLETED이다() {
+        SettlementAgreement agreement = new SettlementAgreement();
+
+        agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
+        AgreementResult result = agreement.agree(Party.RENTER, 50_000, SettlementStatus.COMPLETED);
+
+        assertThat(result).isEqualTo(AgreementResult.COMPLETED);
+    }
 }

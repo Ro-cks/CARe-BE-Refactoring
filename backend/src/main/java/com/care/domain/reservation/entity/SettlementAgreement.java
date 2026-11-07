@@ -7,9 +7,11 @@ public class SettlementAgreement {
     private boolean companyAgreed;
     private boolean renterAgreed;
 
-    public void agree(Party party, long amount, SettlementStatus status) {
+    public AgreementResult agree(Party party, long amount, SettlementStatus status) {
         if (!isValidInput(amount, status)) throw new IllegalArgumentException("잘못된 입력입니다.");
         if (isCompleted()) throw new IllegalStateException("이미 합의가 완료되었습니다.");
+
+        AgreementResult result = decideResult(party, amount, status);
 
         // 1. 현재 제안과 다르면 양쪽 동의를 지운다
         if (isDifferentProposal(amount, status)) {
@@ -26,6 +28,8 @@ public class SettlementAgreement {
         } else {
             renterAgreed = true;
         }
+
+        return result;
     }
 
     private boolean isValidInput(long amount, SettlementStatus status) {
@@ -47,5 +51,13 @@ public class SettlementAgreement {
     public boolean isCompleted() {
 
         return companyAgreed && renterAgreed;
+    }
+
+    private AgreementResult decideResult(Party party, long amount, SettlementStatus status) {
+        if (this.status == null) return AgreementResult.BEGIN;
+        if (isDifferentProposal(amount, status)) return AgreementResult.COUNTER;
+        if (party == Party.COMPANY ? companyAgreed : renterAgreed) return AgreementResult.DUPLICATED;
+
+        return AgreementResult.COMPLETED;
     }
 }
