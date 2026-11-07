@@ -7,37 +7,26 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SettlementAgreementTest {
 
+    private static final SettlementAmount FIFTY_THOUSAND = new SettlementAmount(50_000);
+    private static final SettlementAmount THIRTY_THOUSAND = new SettlementAmount(30_000);
+
     @Test
-    void 상대가_같은_조건에_동의하면_합의가_완료된다() {
+    void 상대가_같은_금액에_동의하면_합의가_완료된다() {
         SettlementAgreement agreement = new SettlementAgreement();
 
-        agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
-        agreement.agree(Party.RENTER, 50000L, SettlementStatus.COMPLETED);
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
+        agreement.agree(Party.RENTER, FIFTY_THOUSAND);
 
         assertThat(agreement.isCompleted()).isTrue();
     }
 
     @Test
     void 상대가_다른_금액을_제안하면_합의가_완료되지_않는다() {
-        // 업체는 50000원, 렌터는 30000원으로 agree()를 호출
         SettlementAgreement agreement = new SettlementAgreement();
 
-        agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
-        agreement.agree(Party.RENTER, 30000L, SettlementStatus.COMPLETED);
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
+        agreement.agree(Party.RENTER, THIRTY_THOUSAND);
 
-        // isCompleted()가 false인지 확인
-        assertThat(agreement.isCompleted()).isFalse();
-    }
-
-    @Test
-    void 상대가_다른_결과를_제안하면_합의가_완료되지_않는다() {
-        // 업체는 50000원 COMPLETED, 렌터는 50000원 REFUNDED로 agree()를 호출
-        SettlementAgreement agreement = new SettlementAgreement();
-
-        agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
-        agreement.agree(Party.RENTER, 50000L, SettlementStatus.REFUNDED);
-
-        // isCompleted()가 false인지 확인
         assertThat(agreement.isCompleted()).isFalse();
     }
 
@@ -45,98 +34,72 @@ class SettlementAgreementTest {
     void 역제안_후_원래_금액으로_돌아오면_상대가_다시_동의해야_한다() {
         SettlementAgreement agreement = new SettlementAgreement();
 
-        agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
-        agreement.agree(Party.RENTER, 30000L, SettlementStatus.COMPLETED);
-        agreement.agree(Party.RENTER, 50000L, SettlementStatus.COMPLETED);
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
+        agreement.agree(Party.RENTER, THIRTY_THOUSAND);
+        agreement.agree(Party.RENTER, FIFTY_THOUSAND);
         assertThat(agreement.isCompleted()).isFalse();
 
-        agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
         assertThat(agreement.isCompleted()).isTrue();
     }
 
     @Test
-    void 같은_사람이_같은_조건으로_다시_요청해도_합의가_완료되지_않는다() {
-        // 업체가 같은 조건으로 두 번 agree()를 호출
+    void 같은_사람이_같은_금액으로_다시_요청해도_합의가_완료되지_않는다() {
         SettlementAgreement agreement = new SettlementAgreement();
-        agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
-        agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
 
-        // isCompleted()가 false인지 확인
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
+
         assertThat(agreement.isCompleted()).isFalse();
     }
 
     @Test
     void 합의가_완료된_뒤_요청하면_에러가_난다() {
-        // 양측이 같은 조건으로 합의를 완료
         SettlementAgreement agreement = new SettlementAgreement();
 
-        agreement.agree(Party.COMPANY, 50000L, SettlementStatus.COMPLETED);
-        agreement.agree(Party.RENTER, 50000L, SettlementStatus.COMPLETED);
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
+        agreement.agree(Party.RENTER, FIFTY_THOUSAND);
 
-        assertThatThrownBy(() -> agreement.agree(Party.RENTER, 30000L, SettlementStatus.COMPLETED))
+        assertThatThrownBy(() -> agreement.agree(Party.RENTER, THIRTY_THOUSAND))
                 .isInstanceOf(IllegalStateException.class);
     }
 
     @Test
-    void 금액이_음수면_에러가_난다() {
+    void 금액이_null이면_에러가_난다() {
         SettlementAgreement agreement = new SettlementAgreement();
 
-        assertThatThrownBy(() -> agreement.agree(Party.COMPANY, -1L, SettlementStatus.COMPLETED))
+        assertThatThrownBy(() -> agreement.agree(Party.COMPANY, null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
-    void 정산_결과가_null이면_에러가_난다() {
+    void 첫_제안이면_BEGIN을_반환한다() {
         SettlementAgreement agreement = new SettlementAgreement();
 
-        assertThatThrownBy(() -> agreement.agree(Party.COMPANY, 0, null))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThat(agreement.agree(Party.COMPANY, FIFTY_THOUSAND)).isEqualTo(AgreementResult.BEGIN);
     }
 
     @Test
-    void 정산_결과가_PENDING이면_에러가_난다() {
+    void 역제안이면_COUNTER를_반환한다() {
         SettlementAgreement agreement = new SettlementAgreement();
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
 
-        assertThatThrownBy(() -> agreement.agree(Party.COMPANY, 0, SettlementStatus.PENDING))
-                .isInstanceOf(IllegalArgumentException.class);
+        assertThat(agreement.agree(Party.RENTER, THIRTY_THOUSAND)).isEqualTo(AgreementResult.COUNTER);
     }
 
     @Test
-    void 첫_제안을_하면_기대값은_BEGIN이다() {
+    void 중복_요청이면_DUPLICATED를_반환한다() {
         SettlementAgreement agreement = new SettlementAgreement();
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
 
-        AgreementResult result = agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
-
-        assertThat(result).isEqualTo(AgreementResult.BEGIN);
+        assertThat(agreement.agree(Party.COMPANY, FIFTY_THOUSAND)).isEqualTo(AgreementResult.DUPLICATED);
     }
 
     @Test
-    void 역제안을_하면_기대값은_COUNTER이다() {
+    void 합의가_완료되면_COMPLETED를_반환한다() {
         SettlementAgreement agreement = new SettlementAgreement();
+        agreement.agree(Party.COMPANY, FIFTY_THOUSAND);
 
-        agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
-        AgreementResult result = agreement.agree(Party.RENTER, 40_000, SettlementStatus.COMPLETED);
-
-        assertThat(result).isEqualTo(AgreementResult.COUNTER);
-    }
-
-    @Test
-    void 중복_요청이_들어오면_기대값은_DUPLICATED이다() {
-        SettlementAgreement agreement = new SettlementAgreement();
-
-        agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
-        AgreementResult result = agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
-
-        assertThat(result).isEqualTo(AgreementResult.DUPLICATED);
-    }
-
-    @Test
-    void 합의가_완료되면_기대값은_COMPLETED이다() {
-        SettlementAgreement agreement = new SettlementAgreement();
-
-        agreement.agree(Party.COMPANY, 50_000, SettlementStatus.COMPLETED);
-        AgreementResult result = agreement.agree(Party.RENTER, 50_000, SettlementStatus.COMPLETED);
-
-        assertThat(result).isEqualTo(AgreementResult.COMPLETED);
+        assertThat(agreement.agree(Party.RENTER, FIFTY_THOUSAND)).isEqualTo(AgreementResult.COMPLETED);
     }
 }

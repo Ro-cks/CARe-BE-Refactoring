@@ -2,27 +2,26 @@ package com.care.domain.reservation.entity;
 
 public class SettlementAgreement {
 
-    private Long amount;              // 제안 금액 (제안 전에는 null)
-    private SettlementStatus status;  // 제안 결과 (제안 전에는 null)
+    private SettlementAmount amount;  // 현재 제안 금액 (제안 전에는 null)
     private boolean companyAgreed;
     private boolean renterAgreed;
 
-    public AgreementResult agree(Party party, long amount, SettlementStatus status) {
-        if (!isValidInput(amount, status)) throw new IllegalArgumentException("잘못된 입력입니다.");
+    public AgreementResult agree(Party party, SettlementAmount amount) {
+        if (amount == null) throw new IllegalArgumentException("정산 금액은 필수입니다.");
         if (isCompleted()) throw new IllegalStateException("이미 합의가 완료되었습니다.");
 
-        AgreementResult result = decideResult(party, amount, status);
+        AgreementResult result = decideResult(party, amount);
 
-        // 1. 현재 제안과 다르면 양쪽 동의를 지운다
-        if (isDifferentProposal(amount, status)) {
+        // 1. 역제안이면 양쪽 동의를 지운다
+        if (result == AgreementResult.COUNTER) {
             companyAgreed = false;
             renterAgreed = false;
         }
 
-        // 2. 요청 조건을 현재 제안으로 저장한다
+        // 2. 요청 금액을 현재 제안으로 저장한다
         this.amount = amount;
-        this.status = status;
 
+        // 3. 요청자의 동의를 기록한다
         if (party == Party.COMPANY) {
             companyAgreed = true;
         } else {
@@ -32,32 +31,18 @@ public class SettlementAgreement {
         return result;
     }
 
-    private boolean isValidInput(long amount, SettlementStatus status) {
-        if (amount < 0) return false;
-
-        if (status == null || status == SettlementStatus.PENDING) return false;
-
-        return true;
-    }
-
-    private boolean isDifferentProposal(long amount, SettlementStatus status) {
-        // 아직 제안이 없으면 false
-        if (this.status == null) return false;
-
-        // 금액이나 결과가 다르면 true, 모두 같으면 false
-        return (this.amount != amount) || (this.status != status);
-    }
-
     public boolean isCompleted() {
-
         return companyAgreed && renterAgreed;
     }
 
-    private AgreementResult decideResult(Party party, long amount, SettlementStatus status) {
-        if (this.status == null) return AgreementResult.BEGIN;
-        if (isDifferentProposal(amount, status)) return AgreementResult.COUNTER;
-        if (party == Party.COMPANY ? companyAgreed : renterAgreed) return AgreementResult.DUPLICATED;
-
+    private AgreementResult decideResult(Party party, SettlementAmount amount) {
+        if (this.amount == null) return AgreementResult.BEGIN;
+        if (!this.amount.equals(amount)) return AgreementResult.COUNTER;
+        if (isAgreedBy(party)) return AgreementResult.DUPLICATED;
         return AgreementResult.COMPLETED;
+    }
+
+    private boolean isAgreedBy(Party party) {
+        return party == Party.COMPANY ? companyAgreed : renterAgreed;
     }
 }
