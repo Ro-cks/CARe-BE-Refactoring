@@ -81,18 +81,6 @@ public class DisputeService {
 		return DisputeCreateResponse.from(saved);
 	}
 
-	@Transactional
-	public void resetDisputeToOpen(String disputeId) {
-		Dispute dispute = disputeRepository.findByDisputeId(disputeId)
-				.orElseThrow(() -> new IllegalArgumentException("분쟁을 찾을 수 없습니다: " + disputeId));
-
-		Reservation reservation = dispute.getReservation();
-
-		dispute.resetToOpen();
-		dispute.getTargetScratch().markDisputed();
-		reservation.lockDeposit();
-	}
-
 	private void captureReturnReportSnapshot(Dispute dispute, String reservationId, Scratch targetScratch) {
 		List<Scratch> beforeScratches = scratchRepository.findByReservation_ReservationIdAndLogType(reservationId, "BEFORE")
 				.stream()

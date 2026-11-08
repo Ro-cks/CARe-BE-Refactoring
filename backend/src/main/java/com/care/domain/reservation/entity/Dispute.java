@@ -157,10 +157,6 @@ public class Dispute extends BaseEntity {
         setStatus(DisputeStatus.COMPLETED);
     }
 
-    public void clearDefenseScratch() {
-        this.defenseScratch = null;
-    }
-
     public AgreementResult agreeSettlement(Party party, SettlementAmount amount) {
         assertStatus(DisputeStatus.OPEN);
 
@@ -189,12 +185,6 @@ public class Dispute extends BaseEntity {
 
     public boolean isRenterSettlementAgreed() {
         return settlementAgreement.isRenterAgreed();
-    }
-
-    public void resetToOpen() {
-        this.status = DisputeStatus.OPEN.name();
-        this.settlementAgreement = new SettlementAgreement();
-        this.settlementAgreedAt = null;
     }
 
     private void assertStatus(DisputeStatus expected) {

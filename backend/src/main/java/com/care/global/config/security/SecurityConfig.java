@@ -69,8 +69,7 @@ public class SecurityConfig {
                                 "/webjars/**",
                                 "/error",
                                 "/companies/**",
-                                "/renters/cars",
-                                "/admin/**"
+                                "/renters/cars"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
