@@ -4,7 +4,9 @@ import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
+import lombok.Getter;
 
+@Getter
 @Embeddable
 public class SettlementAgreement {
 
