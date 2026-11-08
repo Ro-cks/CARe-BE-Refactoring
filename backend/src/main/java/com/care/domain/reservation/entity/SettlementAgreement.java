@@ -1,9 +1,21 @@
 package com.care.domain.reservation.entity;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+
+@Embeddable
 public class SettlementAgreement {
 
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "settlement_final_amount"))
     private SettlementAmount amount;  // 현재 제안 금액 (제안 전에는 null)
+
+    @Column(name = "company_settlement_agreed", nullable = false)
     private boolean companyAgreed;
+
+    @Column(name = "renter_settlement_agreed", nullable = false)
     private boolean renterAgreed;
 
     public AgreementResult agree(Party party, SettlementAmount amount) {
