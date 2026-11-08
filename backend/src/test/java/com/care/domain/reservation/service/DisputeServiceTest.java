@@ -312,7 +312,7 @@ class DisputeServiceTest {
         setField(request, "finalAmount", 100000L);
         setField(request, "status", "COMPLETED");
 
-        given(disputeRepository.findByDisputeId("dispute-1")).willReturn(Optional.of(dispute));
+        given(disputeRepository.findByDisputeIdForUpdate("dispute-1")).willReturn(Optional.of(dispute));
         given(disputeSettlementService.recordSettlement(any(), anyLong())).willReturn("0xrecord");
         given(careTokenService.transfer("0xrenter", "0xcompany", 100000d)).willReturn("0xusdc");
 
@@ -342,7 +342,7 @@ class DisputeServiceTest {
         setField(request, "finalAmount", 0L);
         setField(request, "status", "REFUNDED");
 
-        given(disputeRepository.findByDisputeId("dispute-2")).willReturn(Optional.of(dispute));
+        given(disputeRepository.findByDisputeIdForUpdate("dispute-2")).willReturn(Optional.of(dispute));
         given(disputeSettlementService.recordSettlement(any(), anyLong())).willReturn("0xrecord2");
 
         // when
@@ -365,7 +365,7 @@ class DisputeServiceTest {
         setField(request, "companyRefundAmount", 70000L);
         setField(request, "resolution", "COMPANY_WIN");
 
-        given(disputeRepository.findByDisputeId("dispute-legacy")).willReturn(Optional.of(dispute));
+        given(disputeRepository.findByDisputeIdForUpdate("dispute-legacy")).willReturn(Optional.of(dispute));
         given(disputeSettlementService.recordSettlement(any(), anyLong())).willReturn("0xrecord-legacy");
         given(careTokenService.transfer("0xrenter", "0xcompany", 70000d)).willReturn("0xusdc-legacy");
 
@@ -391,7 +391,7 @@ class DisputeServiceTest {
         setField(request, "finalAmount", 300000L);
         setField(request, "status", "COMPLETED");
 
-        given(disputeRepository.findByDisputeId("dispute-4")).willReturn(Optional.of(dispute));
+        given(disputeRepository.findByDisputeIdForUpdate("dispute-4")).willReturn(Optional.of(dispute));
 
         // when & then
         assertThatThrownBy(() -> disputeService.settleDispute("company-1", "dispute-4", request))
@@ -413,7 +413,7 @@ class DisputeServiceTest {
         setField(renterRequest, "status", "REFUNDED");
 
         // given: mock이 돌려줄 값 미리 정하기
-        given(disputeRepository.findByDisputeId("dispute-5")).willReturn(Optional.of(dispute));
+        given(disputeRepository.findByDisputeIdForUpdate("dispute-5")).willReturn(Optional.of(dispute));
         given(disputeSettlementService.recordSettlement(any(), anyLong())).willReturn("0xrecord5");
         given(careTokenService.transfer("0xrenter", "0xcompany", 50000d)).willReturn("0xusdc5");
 

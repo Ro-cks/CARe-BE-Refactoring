@@ -335,7 +335,7 @@ public class DisputeService {
 
 	@Transactional
 	public DisputeSettleResponse settleDispute(String requesterId, String disputeId, DisputeSettleRequest request) {
-		Dispute dispute = disputeRepository.findByDisputeId(disputeId)
+		Dispute dispute = disputeRepository.findByDisputeIdForUpdate(disputeId)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 분쟁입니다: " + disputeId));
 		Reservation reservation = dispute.getReservation();
 		validateParticipantAccess(requesterId, reservation);
