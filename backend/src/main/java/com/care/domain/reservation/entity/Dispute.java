@@ -40,6 +40,7 @@ public class Dispute extends BaseEntity {
     @Column(name = "claim_amount", nullable = false)
     private int claimAmount;
 
+    @Getter(AccessLevel.NONE)
     @Embedded
     private SettlementAgreement settlementAgreement = new SettlementAgreement();
 
