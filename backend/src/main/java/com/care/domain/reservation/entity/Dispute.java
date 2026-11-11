@@ -40,17 +40,9 @@ public class Dispute extends BaseEntity {
     @Column(name = "claim_amount", nullable = false)
     private int claimAmount;
 
-    @Column(name = "settlement_final_amount")
-    private Long settlementFinalAmount;
-
-    @Column(name = "settlement_status", length = 20)
-    private String settlementStatus;
-
-    @Column(name = "company_settlement_agreed", nullable = false)
-    private boolean companySettlementAgreed;
-
-    @Column(name = "renter_settlement_agreed", nullable = false)
-    private boolean renterSettlementAgreed;
+    @Getter(AccessLevel.NONE)
+    @Embedded
+    private SettlementAgreement settlementAgreement = new SettlementAgreement();
 
     @Column(name = "settlement_agreed_at")
     private LocalDateTime settlementAgreedAt;
@@ -108,8 +100,6 @@ public class Dispute extends BaseEntity {
         dispute.targetScratch = targetScratch;
         dispute.reason = reason;
         dispute.claimAmount = claimAmount;
-        dispute.companySettlementAgreed = false;
-        dispute.renterSettlementAgreed = false;
         dispute.snapshotWarning = false;
         dispute.setStatus(DisputeStatus.OPEN);
         return dispute;
@@ -167,60 +157,34 @@ public class Dispute extends BaseEntity {
         setStatus(DisputeStatus.COMPLETED);
     }
 
-    public void proposeSettlement(long finalAmount, SettlementStatus settlementStatus) {
-        if (finalAmount < 0) {
-            throw new IllegalArgumentException("최종 정산 금액은 0 이상이어야 합니다.");
-        }
-        if (settlementStatus == null || settlementStatus == SettlementStatus.PENDING) {
-            throw new IllegalArgumentException("정산 상태는 COMPLETED 또는 REFUNDED여야 합니다.");
-        }
+    public AgreementResult agreeSettlement(Party party, SettlementAmount amount) {
+        assertStatus(DisputeStatus.OPEN);
 
-        this.settlementFinalAmount = finalAmount;
-        this.settlementStatus = settlementStatus.name();
-    }
-
-    public boolean isCounterProposal(long finalAmount, SettlementStatus settlementStatus) {
-        if (this.settlementFinalAmount == null || this.settlementStatus == null) {
-            return false;
-        }
-        return this.settlementFinalAmount != finalAmount || !this.settlementStatus.equals(settlementStatus.name());
-    }
-
-    public void resetSettlementAgreements() {
-        this.companySettlementAgreed = false;
-        this.renterSettlementAgreed = false;
-        this.settlementAgreedAt = null;
-    }
-
-    public void agreeSettlementByCompany() {
-        this.companySettlementAgreed = true;
-        if (isSettlementFullyAgreed()) {
+        AgreementResult result = settlementAgreement.agree(party, amount);
+        if (result == AgreementResult.COMPLETED) {
             this.settlementAgreedAt = LocalDateTime.now();
         }
+        return result;
     }
 
-    public void agreeSettlementByRenter() {
-        this.renterSettlementAgreed = true;
-        if (isSettlementFullyAgreed()) {
-            this.settlementAgreedAt = LocalDateTime.now();
-        }
+    // 아래는 기존 API 응답(DisputeDetailResponse)을 유지하기 위한 메서드
+    public Long getSettlementFinalAmount() {
+        SettlementAmount amount = settlementAgreement.getAmount();
+        return amount == null ? null : amount.value();
     }
 
-    public boolean isSettlementFullyAgreed() {
-        return this.companySettlementAgreed && this.renterSettlementAgreed;
+    public String getSettlementStatus() {
+        SettlementAmount amount = settlementAgreement.getAmount();
+        if (amount == null) return null;
+        return amount.isNoFault() ? "REFUNDED" : "COMPLETED";
     }
 
-    public void clearDefenseScratch() {
-        this.defenseScratch = null;
+    public boolean isCompanySettlementAgreed() {
+        return settlementAgreement.isCompanyAgreed();
     }
 
-    public void resetToOpen() {
-        this.status = DisputeStatus.OPEN.name();
-        this.settlementFinalAmount = null;
-        this.settlementStatus = null;
-        this.companySettlementAgreed = false;
-        this.renterSettlementAgreed = false;
-        this.settlementAgreedAt = null;
+    public boolean isRenterSettlementAgreed() {
+        return settlementAgreement.isRenterAgreed();
     }
 
     private void assertStatus(DisputeStatus expected) {

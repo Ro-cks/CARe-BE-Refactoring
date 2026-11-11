@@ -1,29 +1,19 @@
 package com.care.domain.reservation.service;
 
 import com.care.domain.company.service.CompanyNotificationService;
+import com.care.domain.renter.service.RenterNotificationService;
 import com.care.domain.reservation.controller.dto.request.DisputeCreateRequest;
 import com.care.domain.reservation.controller.dto.request.DisputeDefenseRequest;
 import com.care.domain.reservation.controller.dto.request.DisputeSettleRequest;
-import com.care.domain.reservation.controller.dto.response.DisputeAiAnalysisResponse;
-import com.care.domain.reservation.controller.dto.response.DisputeCreateResponse;
-import com.care.domain.reservation.controller.dto.response.DisputeDefenseResponse;
-import com.care.domain.reservation.controller.dto.response.DisputeDetailResponse;
-import com.care.domain.reservation.controller.dto.response.DisputePreviousScratchResponse;
-import com.care.domain.reservation.controller.dto.response.DisputeSettleResponse;
-import com.care.domain.reservation.controller.dto.response.DisputeSummaryResponse;
-import com.care.domain.reservation.entity.Dispute;
-import com.care.domain.reservation.entity.DisputeStatus;
-import com.care.domain.reservation.entity.Reservation;
-import com.care.domain.reservation.entity.SettlementStatus;
-import com.care.domain.reservation.entity.Scratch;
+import com.care.domain.reservation.controller.dto.response.*;
+import com.care.domain.reservation.entity.*;
 import com.care.domain.reservation.repository.DisputeRepository;
 import com.care.domain.reservation.repository.ReservationRepository;
-import com.care.domain.renter.service.RenterNotificationService;
 import com.care.domain.scan.repository.ScratchRepository;
-import com.care.global.blockchain.CareTokenService;
-import com.care.global.blockchain.DisputeSettlementService;
 import com.care.global.ai.AiScratchSimilarityClient;
 import com.care.global.ai.AiScratchSimilarityResult;
+import com.care.global.blockchain.CareTokenService;
+import com.care.global.blockchain.DisputeSettlementService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -89,18 +79,6 @@ public class DisputeService {
 		Dispute saved = disputeRepository.save(dispute);
 		renterNotificationService.createDisputeCreatedNotification(reservation.getRenter(), saved);
 		return DisputeCreateResponse.from(saved);
-	}
-
-	@Transactional
-	public void resetDisputeToOpen(String disputeId) {
-		Dispute dispute = disputeRepository.findByDisputeId(disputeId)
-				.orElseThrow(() -> new IllegalArgumentException("분쟁을 찾을 수 없습니다: " + disputeId));
-
-		Reservation reservation = dispute.getReservation();
-
-		dispute.resetToOpen();
-		dispute.getTargetScratch().markDisputed();
-		reservation.lockDeposit();
 	}
 
 	private void captureReturnReportSnapshot(Dispute dispute, String reservationId, Scratch targetScratch) {
@@ -354,9 +332,10 @@ public class DisputeService {
 			throw new IllegalArgumentException(errorMessage);
 		}
 	}
+
 	@Transactional
 	public DisputeSettleResponse settleDispute(String requesterId, String disputeId, DisputeSettleRequest request) {
-		Dispute dispute = disputeRepository.findByDisputeId(disputeId)
+		Dispute dispute = disputeRepository.findByDisputeIdForUpdate(disputeId)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 분쟁입니다: " + disputeId));
 		Reservation reservation = dispute.getReservation();
 		validateParticipantAccess(requesterId, reservation);
@@ -365,14 +344,8 @@ public class DisputeService {
 			throw new IllegalStateException("이미 정산이 완료된 분쟁입니다.");
 		}
 
-		SettlementStatus targetStatus = SettlementStatus.from(request.getStatus());
-		if (targetStatus == SettlementStatus.PENDING) {
-			throw new IllegalArgumentException("정산 API에서는 PENDING 상태를 사용할 수 없습니다.");
-		}
-
-		long finalAmount = request.getFinalAmount();
-		long maxBurden = reservation.getTotalPrice();
-		if (finalAmount > maxBurden) {
+		SettlementAmount amount = new SettlementAmount(request.getFinalAmount());
+		if (amount.value() > reservation.getTotalPrice()) {
 			throw new IllegalArgumentException("최종 정산 금액은 예약 시 최대부담금을 초과할 수 없습니다.");
 		}
 
@@ -380,133 +353,100 @@ public class DisputeService {
 		String renterWallet = reservation.getRenter().getWalletAddress();
 		validateSettlementWallets(companyWallet, renterWallet);
 
-		String companyId = reservation.getOwnedCar().getCompany().getCompanyId();
-		boolean requesterIsCompany = companyId.equals(requesterId);
-		boolean hadAnyAgreementBefore = dispute.isCompanySettlementAgreed() || dispute.isRenterSettlementAgreed();
+		boolean requesterIsCompany = reservation.getOwnedCar().getCompany().getCompanyId().equals(requesterId);
+		Party party = requesterIsCompany ? Party.COMPANY : Party.RENTER;
+		String requesterWallet = requesterIsCompany ? companyWallet : renterWallet;
 
-		if (dispute.isCounterProposal(finalAmount, targetStatus)) {
-			dispute.resetSettlementAgreements();
-		}
-		dispute.proposeSettlement(finalAmount, targetStatus);
+		AgreementResult result = dispute.agreeSettlement(party, amount);
 
-		boolean alreadyAgreedByRequester = requesterIsCompany
-				? dispute.isCompanySettlementAgreed()
-				: dispute.isRenterSettlementAgreed();
-
-		if (!alreadyAgreedByRequester) {
-			if (requesterIsCompany) {
-				dispute.agreeSettlementByCompany();
-			} else {
-				dispute.agreeSettlementByRenter();
+		switch (result) {
+			case BEGIN -> {
+				// 온체인 합의 초기화
+				initializeAgreementOnChain(disputeId, companyWallet, renterWallet, amount);
+				// 온체인 동의
+				agreeOnChain(disputeId, requesterWallet);
+				// 상대에게 정산 요청 알림
+				notifySettlementRequested(party, reservation, dispute, amount);
 			}
+			case COUNTER -> {
+				// 온체인 동의 → 상대에게 정산 요청 알림
+				// 온체인 동의
+				agreeOnChain(disputeId, requesterWallet);
+				// 상대에게 정산 요청 알림
+				notifySettlementRequested(party, reservation, dispute, amount);
+			}
+			case DUPLICATED -> { }
+			case COMPLETED -> {
+				// 온체인 동의 → 정산 완료 처리
+				// 온체인 동의
+				agreeOnChain(disputeId, requesterWallet);
 
-			try {
-				if (!hadAnyAgreementBefore) {
-					disputeSettlementService.initializeSettlementAgreement(
-							disputeId,
-							companyWallet,
-							renterWallet,
-							finalAmount
-					);
-				}
-
-				disputeSettlementService.agreeSettlementByOperator(
-						disputeId,
-						requesterIsCompany ? companyWallet : renterWallet
-				);
-			} catch (Exception e) {
-				throw new RuntimeException("온체인 합의 반영에 실패했습니다.", e);
+				// 정산 완료 처리
+				return completeSettlement(dispute, reservation, amount, companyWallet, renterWallet);
 			}
 		}
 
-		if (!dispute.isSettlementFullyAgreed()) {
-			if (!alreadyAgreedByRequester) {
-				if (requesterIsCompany) {
-					renterNotificationService.createSettlementRequestedNotification(
-							reservation.getRenter(),
-							dispute,
-							finalAmount
-					);
-				} else {
-					companyNotificationService.createSettlementRequestedNotification(
-							reservation.getOwnedCar().getCompany(),
-							dispute,
-							finalAmount
-					);
-				}
-			}
-			return DisputeSettleResponse.of(
-					disputeId,
-					reservation.getReservationId(),
-					finalAmount,
-					DisputeStatus.OPEN.name(),
-					null,
-					null
-			);
-		}
+		return DisputeSettleResponse.of(
+				disputeId, reservation.getReservationId(), amount.value(),
+				DisputeStatus.OPEN.name(), null, null);
+	}
 
-		String settlementRecordTxHash;
+	private void initializeAgreementOnChain(String disputeId, String companyWallet, String renterWallet, SettlementAmount amount) {
 		try {
-			settlementRecordTxHash = disputeSettlementService.recordSettlement(
-					disputeId,
-					finalAmount
-			);
+			disputeSettlementService.initializeSettlementAgreement(disputeId, companyWallet, renterWallet, amount.value());
+		} catch (Exception e) {
+			throw new RuntimeException("온체인 합의 반영에 실패했습니다.", e);
+		}
+	}
+
+	private void agreeOnChain(String disputeId, String participantWallet) {
+		try {
+			disputeSettlementService.agreeSettlementByOperator(disputeId, participantWallet);
+		} catch (Exception e) {
+			throw new RuntimeException("온체인 합의 반영에 실패했습니다.", e);
+		}
+	}
+
+	private void notifySettlementRequested(Party requester, Reservation reservation, Dispute dispute, SettlementAmount amount) {
+		if (requester == Party.COMPANY) {
+			renterNotificationService.createSettlementRequestedNotification(reservation.getRenter(), dispute, amount.value());
+		} else {
+			companyNotificationService.createSettlementRequestedNotification(reservation.getOwnedCar().getCompany(), dispute, amount.value());
+		}
+	}
+
+	private DisputeSettleResponse completeSettlement(Dispute dispute, Reservation reservation, SettlementAmount amount,
+													 String companyWallet, String renterWallet) {
+		String txHash;
+		try {
+			txHash = disputeSettlementService.recordSettlement(dispute.getDisputeId(), amount.value());
 		} catch (Exception e) {
 			throw new RuntimeException("온체인 정산 처리에 실패했습니다.", e);
 		}
 
-		String usdcTxHash = settlementRecordTxHash;
-		if (finalAmount > 0) {
+		if (amount.isNoFault()) {
+			reservation.safeDeposit();
+		} else {
 			try {
-				usdcTxHash = transferUsdcByStatus(reservation, finalAmount, targetStatus);
+				txHash = careTokenService.transfer(renterWallet, companyWallet, amount.value());
 			} catch (Exception e) {
 				throw new RuntimeException("자동 이체에 실패했습니다.", e);
 			}
+			reservation.deductDeposit();
 		}
+
 		dispute.resolve();
 		dispute.getTargetScratch().clearDisputed();
-		if (targetStatus == SettlementStatus.COMPLETED) {
-			reservation.deductDeposit();
-		} else {
-			reservation.safeDeposit();
-		}
+
+		String settlementStatus = dispute.getSettlementStatus();
 		renterNotificationService.createSettlementCompletedNotification(
-				reservation.getRenter(),
-				dispute,
-				targetStatus.name(),
-				finalAmount
-		);
+				reservation.getRenter(), dispute, settlementStatus, amount.value());
 		companyNotificationService.createSettlementCompletedNotification(
-				reservation.getOwnedCar().getCompany(),
-				dispute,
-				targetStatus.name(),
-				finalAmount
-		);
+				reservation.getOwnedCar().getCompany(), dispute, settlementStatus, amount.value());
 
 		return DisputeSettleResponse.of(
-				disputeId,
-				reservation.getReservationId(),
-				finalAmount,
-				targetStatus.name(),
-				LocalDateTime.now(),
-				usdcTxHash
-		);
-	}
-
-	private String transferUsdcByStatus(Reservation reservation, long finalAmount, SettlementStatus targetStatus) throws Exception {
-		String renterWallet = reservation.getRenter().getWalletAddress();
-		String companyWallet = reservation.getOwnedCar().getCompany().getWalletAddress();
-		validateSettlementWallets(companyWallet, renterWallet);
-
-		double amount = (double) finalAmount;
-		if (targetStatus == SettlementStatus.COMPLETED) {
-			return careTokenService.transfer(renterWallet, companyWallet, amount);
-		}
-		if (targetStatus == SettlementStatus.REFUNDED) {
-			return careTokenService.transfer(companyWallet, renterWallet, amount);
-		}
-
-		throw new IllegalArgumentException("지원하지 않는 정산 상태입니다: " + targetStatus.name());
+				dispute.getDisputeId(), reservation.getReservationId(), amount.value(),
+				settlementStatus, LocalDateTime.now(), txHash);
 	}
 
 	private void validateSettlementWallets(String companyWallet, String renterWallet) {
